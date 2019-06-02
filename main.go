@@ -9,10 +9,13 @@ import (
 	"path/filepath"
 	"strconv"
 	"syscall"
+	"time"
 
 	"github.com/aymerick/raymond"
 	"github.com/nektro/go-util/sqlite"
 	"github.com/nektro/go.etc"
+	"github.com/nektro/go.oauth2"
+	"github.com/valyala/fastjson"
 
 	flag "github.com/spf13/pflag"
 
@@ -124,6 +127,97 @@ func main() {
 	})
 
 	//
+
+	handleLogin := oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID)
+	handleCallback := oauth2.HandleOAuthCallback(oauth2.ProviderDiscord, config.ID, config.Secret, saveOAuth2Info, "./verify")
+
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		s, _, err := pageInit(r, w, http.MethodGet, false, false, false)
+		if err != nil {
+			return
+		}
+		if r.URL.Path != "/" {
+			http.FileServer(http.Dir("www")).ServeHTTP(w, r)
+			return
+		}
+		if _, ok := s.Values["user"]; ok {
+			w.Header().Add("Location", "./requests")
+		} else {
+			w.Header().Add("location", "./login")
+		}
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
+
+	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
+		if _, _, err := pageInit(r, w, http.MethodGet, false, false, false); err != nil {
+			return
+		}
+		handleLogin(w, r)
+	})
+
+	http.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
+		if _, _, err := pageInit(r, w, http.MethodGet, false, false, false); err != nil {
+			return
+		}
+		handleCallback(w, r)
+	})
+
+	http.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
+		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
+		if err != nil {
+			return
+		}
+
+		tm, ok := s.Values["verify_time"]
+		if ok {
+			a := time.Now().Unix() - tm.(int64)
+			b := int64(time.Second * 60 * 5)
+			if a < b {
+				if !u.IsMember {
+					writeResponse(r, w, "Access Denied", "Must be a member. Please try again later.", "", "")
+					return // only query once every 5 mins
+				}
+				w.Header().Add("location", "./requests")
+				w.WriteHeader(http.StatusMovedPermanently)
+				return
+			}
+		}
+
+		snowflake := s.Values["user"].(string)
+		res, rcd := doDiscordAPIRequest(F("/guilds/%s/members/%s", config.Server, snowflake))
+		if rcd >= 400 {
+			writeResponse(r, w, "Discord Error", fastjson.GetString(res, "message"), "", "")
+			return // discord error
+		}
+
+		var dat *DiscordMe
+		json.Unmarshal(res, &dat)
+
+		database.QueryDoUpdate("users", "nickname", dat.Nick, "snowflake", snowflake)
+		database.QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
+
+		allowed := false
+		if containsAny(dat.Roles, config.Members) {
+			database.QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
+			allowed = true
+		}
+		if containsAny(dat.Roles, config.Admins) {
+			database.QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
+			allowed = true
+		}
+		if !allowed {
+			database.QueryDoUpdate("users", "is_member", "0", "snowflake", snowflake)
+			database.QueryDoUpdate("users", "is_admin", "0", "snowflake", snowflake)
+			writeResponse(r, w, "Acess Denied", "No valid Discord Roles found.", "", "")
+			return
+		}
+
+		s.Values["verify_time"] = time.Now().Unix()
+		s.Save(r, w)
+
+		w.Header().Add("location", "./requests")
+		w.WriteHeader(http.StatusMovedPermanently)
+	})
 
 	p := strconv.Itoa(*flagPort)
 	Log("Initialization complete. Starting server on port " + p)
