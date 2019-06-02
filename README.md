@@ -9,7 +9,7 @@ Media Request & Inventory Management System
 
 ## Installing
 ```
-$ go get github.com/nektro/skarn
+$ go get -u github.com/nektro/skarn
 ```
 
 ## License
