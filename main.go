@@ -256,6 +256,44 @@ func main() {
 		})
 	})
 
+	//
+
+	http.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
+		if err != nil {
+			return
+		}
+		if assertPostFormValuesExist(r, "category") != nil {
+			writeResponse(r, w, "Missing POST Value", "", "./../../new", "Go back to /new")
+			return
+		}
+		cat := r.PostForm["category"][0]
+		if !Contains(categoryNames, cat) {
+			writeResponse(r, w, "Invalid Category", "", "./../../new", "Go back to /new")
+			return
+		}
+		if assertPostFormValuesExist(r, "quality_"+cat, "title", "link", "description") != nil {
+			writeResponse(r, w, "Missing POST Values", "Request description items are required.", "./../../new", "Go back to /new")
+			return // post value not found
+		}
+		q := r.PostForm["quality_"+cat][0]
+		t := r.PostForm["title"][0]
+		l := r.PostForm["link"][0]
+		d := r.PostForm["description"][0]
+		lerr := assertURLValidity(l)
+		if lerr != nil {
+			fmt.Fprintln(w, "E", "link", lerr.Error())
+			return // link is not a url
+		}
+		i := database.QueryNextID("requests")
+		o := u.ID
+
+		// success
+		database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
+		fmt.Println("R", "A", i, o, t)
+		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
+	})
+
 	})
 
 	//
