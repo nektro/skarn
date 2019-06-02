@@ -278,6 +278,16 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, true)
+		if err != nil {
+			return
+		}
+		writePage(r, w, u, "./hbs/all_users.hbs", "a/u", "All Users", map[string]interface{}{
+			"users": scanRowsUsers(database.Select().All().From("users").Run(false)),
+		})
+	})
+
 	//
 
 	http.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {

@@ -1,0 +1,47 @@
+            <div class="ui segment">
+                <h2 class="ui header">All Users</h2>
+                <p>Here is the list of every user.</p>
+                <table class="ui celled single line table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Snowflake</th>
+                            <th>JoinedOn</th>
+                            <th>Member?</th>
+                            <th>Banned?</th>
+                            <th>Admin?</th>
+                            <th>Username</th>
+                            <th>Nickname</th>
+                            <th>Avatar</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {{#each data.users}}
+                        <tr>
+                            <td>{{ID}}</td>
+                            <td>{{Snowflake}}</td>
+                            <td>{{JoinedOn}}</td>
+                            <td class="{{#if IsMember}}positive{{else}}negative{{/if}}"><i class="{{#if IsMember}}check{{else}}times{{/if}} icon"></i></td>
+                            <td class="{{#if IsBanned}}positive{{else}}negative{{/if}}"><i class="{{#if IsBanned}}check{{else}}times{{/if}} icon"></i></td>
+                            <td class="{{#if IsAdmin}}positive{{else}}negative{{/if}}"><i class="{{#if IsAdmin}}check{{else}}times{{/if}} icon"></i></td>
+                            <td>{{Username}}</td>
+                            <td>{{Nickname}}</td>
+                            <td class="collapsing"><img src="https://cdn.discordapp.com/avatars/{{Snowflake}}/{{Avatar}}.jpeg"></td>
+                        </tr>
+                        {{/each}}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <style>
+            table.table tbody tr td:nth-child(9) {
+                padding: 0;
+            }
+            table.table tbody tr td:nth-child(9) img {
+                display: block;
+                max-height: 42px;
+                margin: auto;
+            }
+        </style>
+    </body>
+</html>
