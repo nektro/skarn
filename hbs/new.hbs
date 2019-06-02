@@ -1,0 +1,68 @@
+            <div class="ui segment">
+                <h2 class="ui header">New Request</h2>
+                <p>Here you can create a new request.</p>
+                <form class="ui form" method="POST" action="./api/request/create">
+                    <div class="field">
+                        <label>Category</label>
+                        <select class="ui fluid dropdown" name="category" required>
+                            {{#each data.categories}}
+                            <option value="{{@key}}">{{this.name}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label>Request Title</label>
+                        <input type="text" name="title" required placeholder="Insert title...">
+                    </div>
+                    {{#each data.categories}}
+                    <div class="field" data-cat-qual="{{@key}}" hidden>
+                        <label>Quality</label>
+                        <div class="ui fluid multiple search selection dropdown">
+                            <input type="hidden" name="quality_{{@key}}">
+                            <i class="dropdown icon"></i>
+                            <div class="default text">Select Quality</div>
+                            <div class="menu">
+                                {{#each Quality}}
+                                <div class="item" data-value="{{@index}}" data-text="{{this}}">{{this}}</div>
+                                {{/each}}
+                            </div>
+                        </div>
+                    </div>
+                    {{/each}}
+                    <div class="field">
+                        <label>Reference Link</label>
+                        <input type="url" name="link" required placeholder="amazon.com, themoviedb.org, discogs.com, predb.me, etc">
+                    </div>
+                    <div class="field">
+                        <label>Description</label>
+                        <input type="text" name="description" placeholder="Any extra details...">
+                    </div>
+                    <button class="ui button" type="submit">Submit Request</button>
+                </form>
+            </div>
+        </div>
+        <br><br>
+        <style>
+            .ui.dropdown[hidden] {
+                display: none;
+            }
+        </style>
+        <script>
+            (function() {
+                window.addEventListener("load", function() {
+                    $('.ui.dropdown').dropdown();
+                    //
+                    const a = document.querySelector(`[name="category"]`);
+                    a.addEventListener("change", function(e) {
+                        const b = $(`[data-cat-qual]:not([hidden])`);
+                        b.attr("hidden", "");
+
+                        const c = $(`[data-cat-qual="${this.value}"]`);
+                        c.removeAttr("hidden");
+                    });
+                    a.dispatchEvent(new CustomEvent("change"));
+                });
+            })()
+        </script>
+    </body>
+</html>
