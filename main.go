@@ -4,8 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 	"net/url"
+	"os"
+	"os/signal"
 	"path/filepath"
 	"strconv"
+	"syscall"
 
 	"github.com/aymerick/raymond"
 	"github.com/nektro/go-util/sqlite"
