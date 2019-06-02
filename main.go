@@ -133,7 +133,7 @@ func main() {
 	handleCallback := oauth2.HandleOAuthCallback(oauth2.ProviderDiscord, config.ID, config.Secret, saveOAuth2Info, "./verify")
 
 	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		s, _, err := pageInit(r, w, http.MethodGet, false, false, false)
+		_, _, err := pageInit(r, w, http.MethodGet, false, false, false)
 		if err != nil {
 			return
 		}
@@ -141,11 +141,7 @@ func main() {
 			http.FileServer(http.Dir("www")).ServeHTTP(w, r)
 			return
 		}
-		if _, ok := s.Values["user"]; ok {
-			w.Header().Add("Location", "./requests")
-		} else {
-			w.Header().Add("location", "./login")
-		}
+		w.Header().Add("location", "./login")
 		w.WriteHeader(http.StatusMovedPermanently)
 	})
 
