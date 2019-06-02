@@ -76,6 +76,23 @@ func main() {
 
 	//
 
+	gracefulStop := make(chan os.Signal)
+	signal.Notify(gracefulStop, syscall.SIGTERM)
+	signal.Notify(gracefulStop, syscall.SIGINT)
+
+	go func() {
+		sig := <-gracefulStop
+		Log(F("Caught signal '%+v'", sig))
+		Log("Gracefully shutting down...")
+
+		database.Close()
+		Log("Saved database to disk")
+
+		os.Exit(0)
+	}()
+
+	//
+
 	p := strconv.Itoa(*flagPort)
 	Log("Initialization complete. Starting server on port " + p)
 	http.ListenAndServe(":"+p, nil)
