@@ -1,7 +1,6 @@
 # Skarn
 ![loc](https://tokei.rs/b1/github/nektro/skarn)
 [![license](https://img.shields.io/github/license/nektro/skarn.svg)](https://github.com/nektro/skarn/blob/master/LICENSE)
-[![paypal](https://img.shields.io/badge/donate-paypal-blue.svg?logo=paypal)](https://www.paypal.me/nektro)
 [![discord](https://img.shields.io/discord/551971034593755159.svg)](https://discord.gg/P6Y4zQC)
 
 Media request system
