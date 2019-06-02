@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strconv"
 
+	"github.com/nektro/go-util/sqlite"
 	"github.com/nektro/go.etc"
 
 	flag "github.com/spf13/pflag"
@@ -19,6 +20,7 @@ var (
 	config         *Config
 	categoryNames  = []string{"lit", "mov", "mus", "exe", "xxx", "etc"}
 	categoryValues map[string]CategoryMapValue
+	database       *sqlite.DB
 )
 
 func main() {
@@ -42,6 +44,35 @@ func main() {
 	etc.SetSessionName("session_skarn_test")
 
 	json.Unmarshal(ReadFile("./data/categories.json"), &categoryValues)
+
+	//
+
+	database = sqlite.Connect(dataRoot)
+	CheckErr(database.Ping())
+
+	database.CreateTable("users", []string{"id", "int primary key"}, [][]string{
+		{"snowflake", "text"},
+		{"joined_on", "text"},
+		{"is_member", "tinyint(1)"},
+		{"is_banned", "tinyint(1)"},
+		{"is_admin", "tinyint(1)"},
+		{"name", "text"},
+		{"nickname", "text"},
+		{"avatar", "text"},
+	})
+	database.CreateTable("requests", []string{"id", "int primary key"}, [][]string{
+		{"owner", "int"},
+		{"category", "text"},
+		{"added_on", "text"},
+		{"title", "text"},
+		{"quality", "text"},
+		{"link", "text"},
+		{"description", "text"},
+		{"points", "int"},
+		{"filler", "int"},
+		{"filled_on", "text"},
+		{"response", "text"},
+	})
 
 	//
 
