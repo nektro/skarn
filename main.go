@@ -268,6 +268,16 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/leaderboard", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		writePage(r, w, u, "./hbs/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
+			"users": scanRowsUsersComplete(database.Select().All().From("users").WhereEq("is_member", "1").Run(false)),
+		})
+	})
+
 	//
 
 	http.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {
