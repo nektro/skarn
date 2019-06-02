@@ -235,6 +235,17 @@ func main() {
 		s.Values["int"] = j + 1
 		s.Save(r, w)
 		fmt.Fprintf(w, strconv.Itoa(j))
+	http.HandleFunc("/requests", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		writePage(r, w, u, "./hbs/requests.hbs", "open", "Open Requests", map[string]interface{}{
+			"tagline":  "All of the requests that are currently unfilled can be found from here.",
+			"requests": scanRowsRequests(database.Select().All().From("requests").WhereEq("filler", "-1").Run(false)),
+		})
+	})
+
 	})
 
 	//
