@@ -1,9 +1,12 @@
 package main
 
 import (
+	"encoding/json"
 	"net/http"
 	"path/filepath"
 	"strconv"
+
+	"github.com/nektro/go.etc"
 
 	flag "github.com/spf13/pflag"
 
@@ -13,7 +16,11 @@ import (
 
 var (
 	dataRoot       string
+	config         *Config
+	categoryNames  = []string{"lit", "mov", "mus", "exe", "xxx", "etc"}
+	categoryValues map[string]CategoryMapValue
 )
+
 func main() {
 	Log("Initializing Skarn Request System...")
 
@@ -26,6 +33,15 @@ func main() {
 	dataRoot, _ = filepath.Abs(*flagRoot)
 	DieOnError(Assert(DoesFileExist(dataRoot), "Please pass a valid directory as a --root parameter!"))
 	Log("Saving to", dataRoot)
+
+	//
+
+	etc.InitConfig(dataRoot+"/config.json", &config)
+	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
+	etc.ReadAllowedHostnames(dataRoot + "/allowed_domains.txt")
+	etc.SetSessionName("session_skarn_test")
+
+	json.Unmarshal(ReadFile("./data/categories.json"), &categoryValues)
 
 	//
 
