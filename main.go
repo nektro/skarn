@@ -256,6 +256,18 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/mine", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		id := strconv.FormatInt(int64(u.ID), 10)
+		writePage(r, w, u, "./hbs/requests.hbs", "mine", "My Requests", map[string]interface{}{
+			"tagline":  "All requests filed by you are here.",
+			"requests": scanRowsRequests(database.Select().All().From("requests").WhereEq("owner", id).Run(false)),
+		})
+	})
+
 	//
 
 	http.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {
