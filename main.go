@@ -246,6 +246,16 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/new", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		writePage(r, w, u, "./hbs/new.hbs", "new", "New Request", map[string]interface{}{
+			"categories": categoryValues,
+		})
+	})
+
 	})
 
 	//
