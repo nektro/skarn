@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"net/http"
 	"net/url"
 	"os"
@@ -218,6 +219,25 @@ func main() {
 		w.Header().Add("location", "./requests")
 		w.WriteHeader(http.StatusMovedPermanently)
 	})
+
+	http.HandleFunc("/test", func(w http.ResponseWriter, r *http.Request) {
+		// sessions test
+		// increment number every refresh
+		s, _, err := pageInit(r, w, http.MethodGet, true, false, false)
+		if err != nil {
+			return
+		}
+		i := s.Values["int"]
+		if i == nil {
+			i = 0
+		}
+		j := i.(int)
+		s.Values["int"] = j + 1
+		s.Save(r, w)
+		fmt.Fprintf(w, strconv.Itoa(j))
+	})
+
+	//
 
 	p := strconv.Itoa(*flagPort)
 	Log("Initialization complete. Starting server on port " + p)
