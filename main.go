@@ -235,6 +235,8 @@ func main() {
 		s.Values["int"] = j + 1
 		s.Save(r, w)
 		fmt.Fprintf(w, strconv.Itoa(j))
+	})
+
 	http.HandleFunc("/requests", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
@@ -357,6 +359,28 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
+	http.HandleFunc("/api/request/fill", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
+		if err != nil {
+			return
+		}
+		if assertPostFormValuesExist(r, "id", "message") != nil {
+			fmt.Fprintln(w, "missing post value")
+			return
+		}
+		rid := r.PostForm["id"][0]
+		msg := r.PostForm["message"][0]
+		//
+		if !isInt(rid) {
+			fmt.Fprintln(w, "invalid request id")
+			return
+		}
+		uid := strconv.FormatInt(int64(u.ID), 10)
+		//
+		database.QueryDoUpdate("requests", "filler", uid, "id", rid)
+		database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
+		database.QueryDoUpdate("requests", "response", msg, "id", rid)
+		fmt.Fprintln(w, "good")
 	})
 
 	//
