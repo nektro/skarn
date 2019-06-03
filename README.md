@@ -15,6 +15,8 @@ These instructions will get you a copy of the project up and running on your mac
 - GCC on your PATH (for the https://github.com/mattn/go-sqlite3 installation)
 
 ### Installing
+This guide assumes you want to configure Skarn to a Discord server and auto-add members that have a specific role. If this is not the case, then please continue to [Options](#options).
+
 - Go to https://discordapp.com/developers/applications/
 - Create an application and save down the Client ID and Client Secret.
 - Add a bot to the application and save down the Bot Token.
