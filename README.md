@@ -54,10 +54,10 @@ $ ./skarn --root $homedir --port 80
 ```
 
 #### Options
-- `--root`
-    - Path. A path to the directory Skarn can store some configuration and database files.
-- `--port`
-    - Integer. Port to have the Web UI listen on. Default 8000.
+| Argument | Type | Default | Description |
+|--------|------|---------|-------------|
+| `--root` | Path. | None. | A path to the directory Skarn can store some configuration and database files. |
+| `--port` | `int` | `8000` | Port to have the Web UI listen on. |
 
 ## Contributing
 We take issues all the time right here on GitHub. We use labels extensively to show the progress through the fixing process. Question issues are okay but make sure to close the issue when it's been answered!
