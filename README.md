@@ -58,6 +58,7 @@ $ ./skarn --root $homedir --port 80
 |--------|------|---------|-------------|
 | `--root` | Path. | None. | A path to the directory Skarn can store some configuration and database files. |
 | `--port` | `int` | `8000` | Port to have the Web UI listen on. |
+| `--allow-all-hosts` | `bool` | `false` | When true, `allowed_domains.txt` is not checked and Skarn will accept requests from all hostnames. |
 
 ## Contributing
 We take issues all the time right here on GitHub. We use labels extensively to show the progress through the fixing process. Question issues are okay but make sure to close the issue when it's been answered!
