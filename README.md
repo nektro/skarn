@@ -22,6 +22,7 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 
 ```json
 {
+	"port": 8000,
 	"id": "{CLIENT_ID}",
 	"secret": "{CLIENT_SECRET}",
 	"bot_token": "{BOT_TOKEN}",
