@@ -2,7 +2,7 @@
 
 init() {
     go get -v -u github.com/rakyll/statik
-    $GOPATH/bin/statik -src="./data/"
+    $GOPATH/bin/statik -src="./www/"
 }
 build_template() {
     export CGO_ENABLED=1
