@@ -71,7 +71,7 @@ When making a pull request, please have it be associated with an issue and make 
 
 ## Contact
 - hello@nektro.net
-- Meghan#2032 on discordapp.com
+- Meghan#2032 on https://discord.gg/P6Y4zQC
 - https://twitter.com/nektro
 
 ## Donate
