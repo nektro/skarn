@@ -93,7 +93,7 @@ func pageInit(r *http.Request, w http.ResponseWriter, method string, requireLogi
 func doDiscordAPIRequest(endpoint string) ([]byte, int) {
 	par := url.Values{}
 	req, _ := http.NewRequest(http.MethodGet, "https://discordapp.com/api/v6"+endpoint, strings.NewReader(par.Encode()))
-	req.Header.Set("User-Agent", "nektro/requests")
+	req.Header.Set("User-Agent", "nektro/skarn")
 	req.Header.Set("Authorization", "Bot "+config.BotToken)
 	return doHttpRequest(req)
 }
