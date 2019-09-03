@@ -47,7 +47,7 @@ func queryUserBySnowflake(snowflake string) *User {
 
 func scanUser(rows *sql.Rows) User {
 	var u User
-	rows.Scan(&u.ID, &u.Snowflake, &u.JoinedOn, &u.IsMember, &u.IsBanned, &u.IsAdmin, &u.Username, &u.Nickname, &u.Avatar)
+	rows.Scan(&u.ID, &u.Snowflake, &u.JoinedOn, &u.IsMember, &u.IsAdmin, &u.Username, &u.Nickname, &u.Avatar)
 	if len(u.Nickname) > 0 {
 		u.RealName = u.Nickname
 	} else {
@@ -146,9 +146,8 @@ func scanRowsRequests(rows *sql.Rows) []Request {
 	result := []Request{}
 	for rows.Next() {
 		var rq Request
-		var qual string
-		rows.Scan(&rq.ID, &rq.Owner, &rq.Category, &rq.AddedOn, &rq.Title, &qual, &rq.Link, &rq.Description, &rq.Points, &rq.Filler, &rq.FilledOn, &rq.Response)
-		rq.Quality = strings.Split(qual, ",")
+		rows.Scan(&rq.ID, &rq.Owner, &rq.Category, &rq.AddedOn, &rq.Title, &rq.QualityRaw, &rq.Link, &rq.Description, &rq.Points, &rq.Filler, &rq.FilledOn, &rq.Response)
+		rq.Quality = strings.Split(rq.QualityRaw, ",")
 		rq.Filled = rq.Filler > -1
 		result = append(result, rq)
 	}
