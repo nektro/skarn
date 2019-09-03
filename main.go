@@ -31,9 +31,7 @@ var (
 )
 
 func main() {
-
 	flagRoot := flag.String("root", "", "Path of root directory for files")
-	flagPort := flag.Int("port", 8000, "Port to open server on")
 	flag.Parse()
 	util.Log("Initializing Skarn Request System...")
 
@@ -329,7 +327,7 @@ func main() {
 
 	//
 
-	p := strconv.Itoa(*flagPort)
+	p := strconv.Itoa(config.Port)
 	util.Log("Initialization complete. Starting server on port " + p)
 	http.ListenAndServe(":"+p, nil)
 }
