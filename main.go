@@ -114,11 +114,11 @@ func main() {
 		tm, ok := s.Values["verify_time"]
 		if ok {
 			a := time.Now().Unix() - tm.(int64)
-			b := int64(time.Second * 60 * 5)
+			b := int64(time.Second * 60 * 1)
 			if a < b {
 				if !u.IsMember {
 					writeResponse(r, w, "Access Denied", "Must be a member. Please try again later.", "", "")
-					return // only query once every 5 mins
+					return // only query once every 1 mins
 				}
 				w.Header().Add("location", "./requests")
 				w.WriteHeader(http.StatusMovedPermanently)
