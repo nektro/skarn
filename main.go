@@ -100,6 +100,7 @@ func main() {
 
 	//
 
+	etc.MFS.Add(http.Dir("./data/"))
 
 	http.HandleFunc("/", http.FileServer(etc.MFS).ServeHTTP)
 	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID))
@@ -167,7 +168,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "./hbs/requests.hbs", "open", "Open Requests", map[string]interface{}{
+		writePage(r, w, u, "/hbs/requests.hbs", "open", "Open Requests", map[string]interface{}{
 			"tagline":  "All of the requests that are currently unfilled can be found from here.",
 			"requests": scanRowsRequests(database.Select().All().From("requests").WhereEq("filler", "-1").Run(false)),
 		})
@@ -178,7 +179,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "./hbs/new.hbs", "new", "New Request", map[string]interface{}{
+		writePage(r, w, u, "/hbs/new.hbs", "new", "New Request", map[string]interface{}{
 			"categories": categoryValues,
 		})
 	})
@@ -189,7 +190,7 @@ func main() {
 			return
 		}
 		id := strconv.FormatInt(int64(u.ID), 10)
-		writePage(r, w, u, "./hbs/requests.hbs", "mine", "My Requests", map[string]interface{}{
+		writePage(r, w, u, "/hbs/requests.hbs", "mine", "My Requests", map[string]interface{}{
 			"tagline":  "All requests filed by you are here.",
 			"requests": scanRowsRequests(database.Select().All().From("requests").WhereEq("owner", id).Run(false)),
 		})
@@ -200,8 +201,8 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "./hbs/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
 			"users": scanRowsUsersComplete(database.Select().All().From("users").WhereEq("is_member", "1").Run(false)),
+		writePage(r, w, u, "/hbs/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
 		})
 	})
 
@@ -210,8 +211,8 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "./hbs/all_users.hbs", "a/u", "All Users", map[string]interface{}{
 			"users": scanRowsUsers(database.Select().All().From("users").Run(false)),
+		writePage(r, w, u, "/hbs/all_users.hbs", "a/u", "All Users", map[string]interface{}{
 		})
 	})
 
@@ -220,8 +221,8 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "./hbs/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
 			"requests": scanRowsRequests(database.Select().All().From("requests").Run(false)),
+		writePage(r, w, u, "/hbs/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
 		})
 	})
 
