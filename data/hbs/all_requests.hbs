@@ -11,7 +11,7 @@
                             <th>Quality</th>
                             <th>Link</th>
                             <th>Requester</th>
-                            <th>Points</th>
+                            {{!-- <th>Points</th> --}}
                             <th>Filler</th>
                             <th>Filled On</th>
                         </tr>
@@ -26,7 +26,7 @@
                             <td>{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
                             <td><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
                             <td>{{name Owner}}</td>
-                            <td><div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div></td>
+                            {{!-- <td><div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div></td> --}}
                             <td>{{name Filler}}</td>
                             <td>{{FilledOn}}</td>
                         </tr>
