@@ -2,22 +2,22 @@
     "lit": {
         "name": "Book",
         "icon": "book",
-        "quality": ["Any",".pdf",".epub",".mobi",".cbr"]
+        "quality": ["Any",".pdf",".epub",".mobi",".cbr","Other"]
     },
     "mov": {
         "name": "Video",
         "icon": "film",
-        "quality": ["Any","480p","720p","1080p","1440p","2160p","4320p","REMUX","ISO"]
+        "quality": ["Any","480p","720p","1080p","1440p","2160p","4320p","REMUX","ISO","Other"]
     },
     "mus": {
         "name": "Music",
         "icon": "music",
-        "quality": ["Any",".flac",".mp3"]
+        "quality": ["Any",".flac",".mp3","Other"]
     },
     "exe": {
         "name": "Program",
         "icon": "code",
-        "quality": ["Any","Windows","macOS","Linux","Android","ROM"]
+        "quality": ["Any","Windows","macOS","Linux","Android","ROM","Other"]
     },
     "xxx": {
         "name": "NSFW",
