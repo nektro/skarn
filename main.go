@@ -15,6 +15,7 @@ import (
 	"github.com/nektro/go.etc"
 	"github.com/nektro/go.oauth2"
 	"github.com/nektro/go-util/util"
+	"github.com/rakyll/statik/fs"
 	"github.com/valyala/fastjson"
 
 	flag "github.com/spf13/pflag"
