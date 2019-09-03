@@ -155,7 +155,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "/hbs/requests.hbs", "open", "Open Requests", map[string]interface{}{
+		writePage(r, w, u, "/requests.hbs", "open", "Open Requests", map[string]interface{}{
 			"tagline":  "All of the requests that are currently unfilled can be found from here.",
 			"requests": scanRowsRequests(etc.Database.QueryDoSelect("requests", "filler", "-1")),
 		})
@@ -166,7 +166,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "/hbs/new.hbs", "new", "New Request", map[string]interface{}{
+		writePage(r, w, u, "/new.hbs", "new", "New Request", map[string]interface{}{
 			"categories": categoryValues,
 		})
 	})
@@ -177,7 +177,7 @@ func main() {
 			return
 		}
 		id := strconv.FormatInt(int64(u.ID), 10)
-		writePage(r, w, u, "/hbs/requests.hbs", "mine", "My Requests", map[string]interface{}{
+		writePage(r, w, u, "/requests.hbs", "mine", "My Requests", map[string]interface{}{
 			"tagline":  "All requests filed by you are here.",
 			"requests": scanRowsRequests(etc.Database.QueryDoSelect("requests", "owner", id)),
 		})
@@ -188,7 +188,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "/hbs/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
+		writePage(r, w, u, "/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
 			"users": scanRowsUsersComplete(etc.Database.QueryDoSelect("users", "is_member", "1")),
 		})
 	})
@@ -198,7 +198,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "/hbs/all_users.hbs", "a/u", "All Users", map[string]interface{}{
+		writePage(r, w, u, "/all_users.hbs", "a/u", "All Users", map[string]interface{}{
 			"users": scanRowsUsers(etc.Database.QueryDoSelectAll("users")),
 		})
 	})
@@ -208,7 +208,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "/hbs/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
+		writePage(r, w, u, "/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
 			"requests": scanRowsRequests(etc.Database.QueryDoSelectAll("requests")),
 		})
 	})

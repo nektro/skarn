@@ -116,7 +116,7 @@ func containsAny(haystack []string, needle []string) bool {
 }
 
 func writeResponse(r *http.Request, w http.ResponseWriter, title string, message string, url string, link string) {
-	etc.WriteHandlebarsFile(r, w, "/hbs/response.hbs", map[string]interface{}{
+	etc.WriteHandlebarsFile(r, w, "/response.hbs", map[string]interface{}{
 		"base":    "/",
 		"title":   title,
 		"message": message,
@@ -190,7 +190,7 @@ func scanRowsUsersComplete(rows *sql.Rows) []UserComplete {
 }
 
 func writePage(r *http.Request, w http.ResponseWriter, user *User, path string, page string, title string, data map[string]interface{}) {
-	etc.WriteHandlebarsFile(r, w, "/hbs/_header.hbs", map[string]interface{}{
+	etc.WriteHandlebarsFile(r, w, "/_header.hbs", map[string]interface{}{
 		"base":  "/",
 		"user":  user,
 		"page":  page,
