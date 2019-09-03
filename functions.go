@@ -29,19 +29,19 @@ func saveOAuth2Info(w http.ResponseWriter, r *http.Request, provider string, id 
 	sess.Values["user"] = id
 	sess.Save(r, w)
 	queryUserBySnowflake(id)
-	database.QueryDoUpdate("users", "name", name, "snowflake", id)
+	etc.Database.QueryDoUpdate("users", "username", name, "snowflake", id)
 }
 
 func queryUserBySnowflake(snowflake string) *User {
-	rows := database.QueryDoSelect("users", "snowflake", snowflake)
+	rows := etc.Database.QueryDoSelect("users", "snowflake", snowflake)
 	if rows.Next() {
 		ru := scanUser(rows)
 		rows.Close()
 		return &ru
 	}
 	// else
-	id := database.QueryNextID("users")
-	database.QueryPrepared(true, F("insert into users values ('%d', '%s', '%s', 0, 0, 0, '', '', '')", id, snowflake, T()))
+	id := etc.Database.QueryNextID("users")
+	etc.Database.QueryPrepared(true, F("insert into users values ('%d', '%s', '%s', 0, 0, '', '', '')", id, snowflake, T()))
 	return queryUserBySnowflake(snowflake)
 }
 
@@ -181,8 +181,8 @@ func scanRowsUsersComplete(rows *sql.Rows) []UserComplete {
 		uid := strconv.FormatInt(int64(u.ID), 10)
 		var uc UserComplete
 		uc.U = u
-		uc.Fills = scanInt(database.Select().Columns("count(points)").From("requests").WhereEq("filler", uid).Run(false))
-		uc.Points = scanInt(database.Select().Columns("sum(points)").From("requests").WhereEq("filler", uid).Run(false))
+		uc.Fills = scanInt(etc.Database.QuerySelectFunc("requests", "count", "points", "filler", uid))
+		uc.Points = scanInt(etc.Database.QuerySelectFunc("requests", "sum", "points", "filler", uid))
 		result = append(result, uc)
 	}
 	return result

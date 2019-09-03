@@ -6,12 +6,10 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"path/filepath"
 	"strconv"
 	"time"
 
 	"github.com/aymerick/raymond"
-	"github.com/nektro/go-util/sqlite"
 	"github.com/nektro/go-util/util"
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
@@ -19,53 +17,34 @@ import (
 	"github.com/rakyll/statik/fs"
 	"github.com/valyala/fastjson"
 
-	flag "github.com/spf13/pflag"
-
 	. "github.com/nektro/go-util/alias"
 
 	_ "github.com/nektro/skarn/statik"
 )
 
 var (
-	dataRoot       string
 	config         *Config
 	categoryNames  = []string{"lit", "mov", "mus", "exe", "xxx", "etc"}
 	categoryValues map[string]CategoryMapValue
-	database       *sqlite.DB
 )
 
 func main() {
-	flagRoot := flag.String("root", "", "Path of root directory for files")
-	flag.Parse()
 	util.Log("Initializing Skarn Request System...")
 
 	//
 
-	dataRoot, _ = filepath.Abs(*flagRoot)
-	DieOnError(Assert(DoesFileExist(dataRoot), "Please pass a valid directory as a --root parameter!"))
-	Log("Saving to", dataRoot)
-
-	//
-
-	etc.InitConfig(dataRoot+"/config.json", &config)
+	etc.Init("skarn", &config)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
 
-	etc.SetSessionName("session_skarn")
+	json.Unmarshal(util.ReadFile("./data/categories.json"), &categoryValues)
 
-	json.Unmarshal(ReadFile("./data/categories.json"), &categoryValues)
-
-	//
-
-	database = sqlite.Connect(dataRoot)
-	CheckErr(database.Ping())
-
-	database.CreateTableStruct("users", User{})
-	database.CreateTableStruct("requests", Request{})
+	etc.Database.CreateTableStruct("users", User{})
+	etc.Database.CreateTableStruct("requests", Request{})
 
 	etc.RunOnClose(func() {
 		util.Log("Gracefully shutting down...")
 
-		database.Close()
+		etc.Database.Close()
 		util.Log("Saved database to disk")
 
 		os.Exit(0)
@@ -86,7 +65,7 @@ func main() {
 	})
 
 	raymond.RegisterHelper("name", func(userID int) string {
-		usrs := scanRowsUsers(database.QueryDoSelect("users", "id", strconv.FormatInt(int64(userID), 10)))
+		usrs := scanRowsUsers(etc.Database.QueryDoSelect("users", "id", strconv.FormatInt(int64(userID), 10)))
 		if len(usrs) == 0 {
 			return ""
 		}
@@ -145,21 +124,21 @@ func main() {
 		var dat discord.GuildMember
 		json.Unmarshal(res, &dat)
 
-		database.QueryDoUpdate("users", "nickname", dat.Nick, "snowflake", snowflake)
-		database.QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
+		etc.Database.QueryDoUpdate("users", "nickname", dat.Nickname, "snowflake", snowflake)
+		etc.Database.QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
 
 		allowed := false
 		if containsAny(dat.Roles, config.Members) {
-			database.QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
+			etc.Database.QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
 			allowed = true
 		}
 		if containsAny(dat.Roles, config.Admins) {
-			database.QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
+			etc.Database.QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
 			allowed = true
 		}
 		if !allowed {
-			database.QueryDoUpdate("users", "is_member", "0", "snowflake", snowflake)
-			database.QueryDoUpdate("users", "is_admin", "0", "snowflake", snowflake)
+			etc.Database.QueryDoUpdate("users", "is_member", "0", "snowflake", snowflake)
+			etc.Database.QueryDoUpdate("users", "is_admin", "0", "snowflake", snowflake)
 			writeResponse(r, w, "Acess Denied", "No valid Discord Roles found.", "", "")
 			return
 		}
@@ -178,7 +157,7 @@ func main() {
 		}
 		writePage(r, w, u, "/hbs/requests.hbs", "open", "Open Requests", map[string]interface{}{
 			"tagline":  "All of the requests that are currently unfilled can be found from here.",
-			"requests": scanRowsRequests(database.Select().All().From("requests").WhereEq("filler", "-1").Run(false)),
+			"requests": scanRowsRequests(etc.Database.QueryDoSelect("requests", "filler", "-1")),
 		})
 	})
 
@@ -200,7 +179,7 @@ func main() {
 		id := strconv.FormatInt(int64(u.ID), 10)
 		writePage(r, w, u, "/hbs/requests.hbs", "mine", "My Requests", map[string]interface{}{
 			"tagline":  "All requests filed by you are here.",
-			"requests": scanRowsRequests(database.Select().All().From("requests").WhereEq("owner", id).Run(false)),
+			"requests": scanRowsRequests(etc.Database.QueryDoSelect("requests", "owner", id)),
 		})
 	})
 
@@ -209,8 +188,8 @@ func main() {
 		if err != nil {
 			return
 		}
-			"users": scanRowsUsersComplete(database.Select().All().From("users").WhereEq("is_member", "1").Run(false)),
 		writePage(r, w, u, "/hbs/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
+			"users": scanRowsUsersComplete(etc.Database.QueryDoSelect("users", "is_member", "1")),
 		})
 	})
 
@@ -219,8 +198,8 @@ func main() {
 		if err != nil {
 			return
 		}
-			"users": scanRowsUsers(database.Select().All().From("users").Run(false)),
 		writePage(r, w, u, "/hbs/all_users.hbs", "a/u", "All Users", map[string]interface{}{
+			"users": scanRowsUsers(etc.Database.QueryDoSelectAll("users")),
 		})
 	})
 
@@ -229,8 +208,8 @@ func main() {
 		if err != nil {
 			return
 		}
-			"requests": scanRowsRequests(database.Select().All().From("requests").Run(false)),
 		writePage(r, w, u, "/hbs/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
+			"requests": scanRowsRequests(etc.Database.QueryDoSelectAll("requests")),
 		})
 	})
 
@@ -263,11 +242,11 @@ func main() {
 			fmt.Fprintln(w, "E", "link", lerr.Error())
 			return // link is not a url
 		}
-		i := database.QueryNextID("requests")
+		i := etc.Database.QueryNextID("requests")
 		o := u.ID
 
 		// success
-		database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
+		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
 		fmt.Println("R", "A", i, o, t)
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})
@@ -289,7 +268,7 @@ func main() {
 			return
 		}
 		//
-		database.QueryDoUpdate("requests", "points", scr, "id", rid)
+		etc.Database.QueryDoUpdate("requests", "points", scr, "id", rid)
 		fmt.Fprintln(w, "good")
 	})
 
@@ -311,9 +290,9 @@ func main() {
 		}
 		uid := strconv.FormatInt(int64(u.ID), 10)
 		//
-		database.QueryDoUpdate("requests", "filler", uid, "id", rid)
-		database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
-		database.QueryDoUpdate("requests", "response", msg, "id", rid)
+		etc.Database.QueryDoUpdate("requests", "filler", uid, "id", rid)
+		etc.Database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
+		etc.Database.QueryDoUpdate("requests", "response", msg, "id", rid)
 		fmt.Fprintln(w, "good")
 	})
 
