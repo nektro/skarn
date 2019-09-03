@@ -13,7 +13,6 @@ import (
 	"github.com/aymerick/raymond"
 	"github.com/nektro/go-util/sqlite"
 	"github.com/nektro/go.etc"
-	"github.com/nektro/go.hosts"
 	"github.com/nektro/go.oauth2"
 	"github.com/nektro/go-util/util"
 	"github.com/valyala/fastjson"
@@ -35,7 +34,6 @@ func main() {
 
 	flagRoot := flag.String("root", "", "Path of root directory for files")
 	flagPort := flag.Int("port", 8000, "Port to open server on")
-	flagAllowAllHosts := flag.Bool("allow-all-hosts", false, "")
 	flag.Parse()
 	util.Log("Initializing Skarn Request System...")
 
@@ -50,11 +48,6 @@ func main() {
 	etc.InitConfig(dataRoot+"/config.json", &config)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
 
-	if !*flagAllowAllHosts {
-		etc.ReadAllowedHostnames(dataRoot + "/allowed_domains.txt")
-	} else {
-		hosts.AllowAll()
-	}
 	etc.SetSessionName("session_skarn")
 
 	json.Unmarshal(ReadFile("./data/categories.json"), &categoryValues)
