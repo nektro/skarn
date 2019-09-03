@@ -2,6 +2,7 @@
 ![loc](https://tokei.rs/b1/github/nektro/skarn)
 [![license](https://img.shields.io/github/license/nektro/skarn.svg)](https://github.com/nektro/skarn/blob/master/LICENSE)
 [![discord](https://img.shields.io/discord/551971034593755159.svg)](https://discord.gg/P6Y4zQC)
+[![CircleCI](https://circleci.com/gh/nektro/skarn.svg?style=svg)](https://circleci.com/gh/nektro/skarn)
 
 Media Request & Inventory Management System
 
@@ -10,19 +11,14 @@ Media Request & Inventory Management System
 ## Getting Started
 These instructions will get you a copy of the project up and running on your machine.
 
-### Prerequisites
-- The Go Language 1.7+ (https://golang.org/dl/)
-- GCC on your PATH (for the https://github.com/mattn/go-sqlite3 installation)
-
-### Installing
-This guide assumes you want to configure Skarn to a Discord server and auto-add members that have a specific role. If this is not the case, then please continue to [Options](#options).
+### Configuration
+This guide assumes you want to configure Skarn to a Discord server and auto-add members that have a specific role.
 
 - Go to https://discordapp.com/developers/applications/
 - Create an application and save down the Client ID and Client Secret.
 - Add a bot to the application and save down the Bot Token.
 - Add the bot to the server you wish to auth this instance throuh.
-- Create a directory that the server may use to store some files.
-- In that directory create a `config.json`.
+- Create a `~/.config/skarn/config.json`.
 
 ```json
 {
@@ -37,28 +33,24 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 - It should be in the above format.
     - `"members"` is an array of role snowflakes that will be added as a member. Member can create and fill requests.
     - `"admins"` is an array of role snowflakes that will be added as an admin. Admins can adjust the amount of points each request is worth.
-- Next create a file called `allowed_domains.txt` and in it place the hostnames that users may connect to the server with.
-    - This does not include the port number (Even if it's not 80 or 443).
-    - File must have LF line endings.
-- Lastly run the following.
+- Lastly run the binary as follows obtained from either the *Deployment* or *Development* sections.
 
 ```bash
-$ go get -u github.com/nektro/skarn
+$ ./skarn
+```
+
+### Deployment
+By signing in with GitHub, you can download pre-built binaries from the *Artifacts* tab of https://circleci.com/gh/nektro/skarn.
+
+### Development
+- The Go Language 1.7+ (https://golang.org/dl/)
+- GCC on your PATH (for the https://github.com/mattn/go-sqlite3 installation)
+
+```bash
+$ go get -u -v github.com/nektro/skarn
 $ cd $GOPATH/src/github.com/nektro/skarn/
-$ go build
+$ ./scripts/build/all.sh
 ```
-
-### Running
-```bash
-$ ./skarn --root $homedir --port 80
-```
-
-#### Options
-| Argument | Type | Default | Description |
-|--------|------|---------|-------------|
-| `--root` | Path. | None. | A path to the directory Skarn can store some configuration and database files. |
-| `--port` | `int` | `8000` | Port to have the Web UI listen on. |
-| `--allow-all-hosts` | `bool` | `false` | When true, `allowed_domains.txt` is not checked and Skarn will accept requests from all hostnames. |
 
 ## Contributing
 We take issues all the time right here on GitHub. We use labels extensively to show the progress through the fixing process. Question issues are okay but make sure to close the issue when it's been answered!
