@@ -78,7 +78,7 @@ func pageInit(r *http.Request, w http.ResponseWriter, method string, requireLogi
 		return s, nil, nil
 	}
 	u := queryUserBySnowflake(s.Values["user"].(string))
-	if !u.IsMember {
+	if requireMember && !u.IsMember {
 		writeResponse(r, w, "Access Forbidden", "You must be a member to view this page.", "", "")
 		return s, u, E("not a member")
 	}
