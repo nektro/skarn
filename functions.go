@@ -168,8 +168,9 @@ func scanRowsUsers(rows *sql.Rows) []User {
 
 func scanInt(row *sql.Rows) int {
 	var s int
-	row.Next()
-	row.Scan(&s)
+	if row.Next() {
+		row.Scan(&s)
+	}
 	row.Close()
 	return s
 }
