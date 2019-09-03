@@ -64,31 +64,8 @@ func main() {
 	database = sqlite.Connect(dataRoot)
 	CheckErr(database.Ping())
 
-	database.CreateTable("users", []string{"id", "int primary key"}, [][]string{
-		{"snowflake", "text"},
-		{"joined_on", "text"},
-		{"is_member", "tinyint(1)"},
-		{"is_banned", "tinyint(1)"},
-		{"is_admin", "tinyint(1)"},
-		{"name", "text"},
-		{"nickname", "text"},
-		{"avatar", "text"},
-	})
-	database.CreateTable("requests", []string{"id", "int primary key"}, [][]string{
-		{"owner", "int"},
-		{"category", "text"},
-		{"added_on", "text"},
-		{"title", "text"},
-		{"quality", "text"},
-		{"link", "text"},
-		{"description", "text"},
-		{"points", "int"},
-		{"filler", "int"},
-		{"filled_on", "text"},
-		{"response", "text"},
-	})
-
-	//
+	database.CreateTableStruct("users", User{})
+	database.CreateTableStruct("requests", Request{})
 
 	etc.RunOnClose(func() {
 		Log("Gracefully shutting down...")
