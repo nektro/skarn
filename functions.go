@@ -10,7 +10,6 @@ import (
 
 	"github.com/gorilla/sessions"
 	"github.com/nektro/go.etc"
-	"github.com/nektro/go.hosts"
 
 	. "github.com/nektro/go-util/alias"
 	. "github.com/nektro/go-util/util"
@@ -58,9 +57,6 @@ func scanUser(rows *sql.Rows) User {
 }
 
 func pageInit(r *http.Request, w http.ResponseWriter, method string, requireLogin bool, requireMember bool, requireAdmin bool) (*sessions.Session, *User, error) {
-	if assertHostnameValidity(r, w) != nil {
-		return nil, nil, E("invalid hostname")
-	}
 	if r.Method != method {
 		writeResponse(r, w, "Forbidden Method", F("%s is not allowed on this endpoint.", r.Method), "", "")
 		return nil, nil, E("bad http method")
@@ -116,14 +112,6 @@ func containsAny(haystack []string, needle []string) bool {
 		}
 	}
 	return false
-}
-
-func assertHostnameValidity(r *http.Request, w http.ResponseWriter) error {
-	if !hosts.Allowed(r) {
-		writeResponse(r, w, "Forbidden Hostname", "You may not connect to this site with that hostname.", "", "")
-		return E("forbidden hostname")
-	}
-	return nil
 }
 
 func writeResponse(r *http.Request, w http.ResponseWriter, title string, message string, url string, link string) {

@@ -109,35 +109,10 @@ func main() {
 
 	//
 
-	handleLogin := oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID)
-	handleCallback := oauth2.HandleOAuthCallback(oauth2.ProviderDiscord, config.ID, config.Secret, saveOAuth2Info, "./verify")
 
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
-		_, _, err := pageInit(r, w, http.MethodGet, false, false, false)
-		if err != nil {
-			return
-		}
-		if r.URL.Path != "/" {
-			http.FileServer(http.Dir("www")).ServeHTTP(w, r)
-			return
-		}
-		w.Header().Add("location", "./login")
-		w.WriteHeader(http.StatusMovedPermanently)
-	})
-
-	http.HandleFunc("/login", func(w http.ResponseWriter, r *http.Request) {
-		if _, _, err := pageInit(r, w, http.MethodGet, false, false, false); err != nil {
-			return
-		}
-		handleLogin(w, r)
-	})
-
-	http.HandleFunc("/callback", func(w http.ResponseWriter, r *http.Request) {
-		if _, _, err := pageInit(r, w, http.MethodGet, false, false, false); err != nil {
-			return
-		}
-		handleCallback(w, r)
-	})
+	http.HandleFunc("/", http.FileServer(etc.MFS).ServeHTTP)
+	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID))
+	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderDiscord, config.ID, config.Secret, saveOAuth2Info, "./verify"))
 
 	http.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
