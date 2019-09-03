@@ -112,6 +112,7 @@ func main() {
 	raymond.RegisterHelper("icon", func(cat string) string {
 		return categoryValues[cat].Icon
 	})
+
 	raymond.RegisterHelper("domain", func(link string) string {
 		u, e := url.Parse(link)
 		if e != nil {
@@ -119,6 +120,7 @@ func main() {
 		}
 		return u.Host
 	})
+
 	raymond.RegisterHelper("name", func(userID int) string {
 		usrs := scanRowsUsers(database.QueryDoSelect("users", "id", strconv.FormatInt(int64(userID), 10)))
 		if len(usrs) == 0 {
@@ -126,10 +128,12 @@ func main() {
 		}
 		return usrs[0].RealName
 	})
+
 	raymond.RegisterHelper("quality", func(cat string, item string) string {
 		i, _ := strconv.ParseInt(item, 10, 32)
 		return categoryValues[cat].Quality[i]
 	})
+
 	raymond.RegisterHelper("length", func(array []string) int {
 		return len(array)
 	})
