@@ -6,10 +6,8 @@ import (
 	"net/http"
 	"net/url"
 	"os"
-	"os/signal"
 	"path/filepath"
 	"strconv"
-	"syscall"
 	"time"
 
 	"github.com/aymerick/raymond"
@@ -92,20 +90,14 @@ func main() {
 
 	//
 
-	gracefulStop := make(chan os.Signal)
-	signal.Notify(gracefulStop, syscall.SIGTERM)
-	signal.Notify(gracefulStop, syscall.SIGINT)
-
-	go func() {
-		sig := <-gracefulStop
-		Log(F("Caught signal '%+v'", sig))
+	etc.RunOnClose(func() {
 		Log("Gracefully shutting down...")
 
 		database.Close()
 		Log("Saved database to disk")
 
 		os.Exit(0)
-	}()
+	})
 
 	//
 
