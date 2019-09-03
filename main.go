@@ -37,7 +37,7 @@ func main() {
 	etc.Init("skarn", &config)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
 
-	etc.MFS.Add(http.Dir("./data/"))
+	etc.MFS.Add(http.Dir("./www/"))
 
 	statikFS, err := fs.New()
 	util.DieOnError(err)
