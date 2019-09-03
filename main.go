@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"io/ioutil"
 	"net/http"
 	"net/url"
 	"os"
@@ -36,7 +37,15 @@ func main() {
 	etc.Init("skarn", &config)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
 
-	json.Unmarshal(util.ReadFile("./data/categories.json"), &categoryValues)
+	etc.MFS.Add(http.Dir("./data/"))
+
+	statikFS, err := fs.New()
+	util.DieOnError(err)
+	etc.MFS.Add(http.FileSystem(statikFS))
+
+	catf, _ := etc.MFS.Open("/categories.json")
+	catb, _ := ioutil.ReadAll(catf)
+	json.Unmarshal(catb, &categoryValues)
 
 	etc.Database.CreateTableStruct("users", User{})
 	etc.Database.CreateTableStruct("requests", Request{})
@@ -82,12 +91,6 @@ func main() {
 	})
 
 	//
-
-	etc.MFS.Add(http.Dir("./data/"))
-
-	statikFS, err := fs.New()
-	util.DieOnError(err)
-	etc.MFS.Add(http.FileSystem(statikFS))
 
 	http.HandleFunc("/", http.FileServer(etc.MFS).ServeHTTP)
 	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID))
