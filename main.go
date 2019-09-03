@@ -51,13 +51,13 @@ func main() {
 
 	etc.InitConfig(dataRoot+"/config.json", &config)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
-	etc.SetSessionName("session_skarn_test")
 
 	if !*flagAllowAllHosts {
 		etc.ReadAllowedHostnames(dataRoot + "/allowed_domains.txt")
 	} else {
 		hosts.AllowAll()
 	}
+	etc.SetSessionName("session_skarn")
 
 	json.Unmarshal(ReadFile("./data/categories.json"), &categoryValues)
 
