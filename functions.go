@@ -24,7 +24,7 @@ func isLoggedInS(sess *sessions.Session) bool {
 	return ok
 }
 
-func saveOAuth2Info(w http.ResponseWriter, r *http.Request, provider string, id string, name string) {
+func saveOAuth2Info(w http.ResponseWriter, r *http.Request, provider string, id string, name string, oa2resp map[string]interface{}) {
 	sess := etc.GetSession(r)
 	sess.Values["user"] = id
 	sess.Save(r, w)
