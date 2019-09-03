@@ -12,7 +12,7 @@ build_template() {
     EXT=$3
     TAG=$(date +'%Y.%m.%d')-$(git log --format=%h -1)
     echo $TAG-$GOOS-$GOARCH
-    go build -ldflags="-s -w" -o ./bin/andesite-v$TAG-$GOOS-$GOARCH$EXT
+    go build -ldflags="-s -w" -o ./bin/skarn-v$TAG-$GOOS-$GOARCH$EXT
 }
 
 init
