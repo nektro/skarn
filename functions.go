@@ -9,10 +9,10 @@ import (
 	"strings"
 
 	"github.com/gorilla/sessions"
+	"github.com/nektro/go-util/util"
 	etc "github.com/nektro/go.etc"
 
 	. "github.com/nektro/go-util/alias"
-	. "github.com/nektro/go-util/util"
 )
 
 func isLoggedIn(r *http.Request) bool {
@@ -25,6 +25,7 @@ func isLoggedInS(sess *sessions.Session) bool {
 }
 
 func saveOAuth2Info(w http.ResponseWriter, r *http.Request, provider string, id string, name string, oa2resp map[string]interface{}) {
+	util.Log("[user-login]", provider, id, name)
 	sess := etc.GetSession(r)
 	sess.Values["user"] = id
 	sess.Save(r, w)
