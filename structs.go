@@ -8,6 +8,7 @@ type Config struct {
 	Server   string   `json:"server"`
 	Members  []string `json:"members"`
 	Admins   []string `json:"admins"`
+	Themes   []string `json:"themes"`
 }
 
 type User struct {
