@@ -108,7 +108,7 @@ func doHttpRequest(req *http.Request) ([]byte, int) {
 
 func containsAny(haystack []string, needle []string) bool {
 	for _, item := range needle {
-		if Contains(haystack, item) {
+		if util.Contains(haystack, item) {
 			return true
 		}
 	}
