@@ -13,6 +13,7 @@ import (
 	"github.com/aymerick/raymond"
 	"github.com/nektro/go-util/sqlite"
 	"github.com/nektro/go-util/util"
+	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
 	oauth2 "github.com/nektro/go.oauth2"
 	"github.com/rakyll/statik/fs"
@@ -141,7 +142,7 @@ func main() {
 			return // discord error
 		}
 
-		var dat *DiscordMe
+		var dat discord.GuildMember
 		json.Unmarshal(res, &dat)
 
 		database.QueryDoUpdate("users", "nickname", dat.Nick, "snowflake", snowflake)
