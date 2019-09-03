@@ -20,6 +20,8 @@ import (
 	flag "github.com/spf13/pflag"
 
 	. "github.com/nektro/go-util/alias"
+
+	_ "github.com/nektro/skarn/statik"
 )
 
 var (
@@ -101,6 +103,10 @@ func main() {
 	//
 
 	etc.MFS.Add(http.Dir("./data/"))
+
+	statikFS, err := fs.New()
+	util.DieOnError(err)
+	etc.MFS.Add(http.FileSystem(statikFS))
 
 	http.HandleFunc("/", http.FileServer(etc.MFS).ServeHTTP)
 	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID))
