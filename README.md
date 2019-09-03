@@ -28,7 +28,8 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 	"bot_token": "{BOT_TOKEN}",
 	"server": "{SERVER_ID}",
 	"members": ["{ROLE_SNOWFLAKE"],
-	"admins": ["{ROLE_SNOWFLAKE"]
+	"admins": ["{ROLE_SNOWFLAKE"],
+	"themes": ["{THEME_ID}"]
 }
 ```
 - It should be in the above format.
@@ -39,6 +40,9 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 ```bash
 $ ./skarn
 ```
+
+### Themes
+Skarn supports custom themes through use of the `"themes"` property in your `config.json` to identify a folder or list of folders to overwrite any of the handlebars template files. The location to place themes is at `~/.config/skarn/themes/{THEME_ID}/`
 
 ### Deployment
 By signing in with GitHub, you can download pre-built binaries from the *Artifacts* tab of https://circleci.com/gh/nektro/skarn.
