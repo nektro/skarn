@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/sessions"
-	"github.com/nektro/go.etc"
+	etc "github.com/nektro/go.etc"
 
 	. "github.com/nektro/go-util/alias"
 	. "github.com/nektro/go-util/util"
