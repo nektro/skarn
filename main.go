@@ -15,12 +15,12 @@ import (
 	"github.com/nektro/go.etc"
 	"github.com/nektro/go.hosts"
 	"github.com/nektro/go.oauth2"
+	"github.com/nektro/go-util/util"
 	"github.com/valyala/fastjson"
 
 	flag "github.com/spf13/pflag"
 
 	. "github.com/nektro/go-util/alias"
-	. "github.com/nektro/go-util/util"
 )
 
 var (
@@ -32,12 +32,12 @@ var (
 )
 
 func main() {
-	Log("Initializing Skarn Request System...")
 
 	flagRoot := flag.String("root", "", "Path of root directory for files")
 	flagPort := flag.Int("port", 8000, "Port to open server on")
 	flagAllowAllHosts := flag.Bool("allow-all-hosts", false, "")
 	flag.Parse()
+	util.Log("Initializing Skarn Request System...")
 
 	//
 
@@ -68,10 +68,10 @@ func main() {
 	database.CreateTableStruct("requests", Request{})
 
 	etc.RunOnClose(func() {
-		Log("Gracefully shutting down...")
+		util.Log("Gracefully shutting down...")
 
 		database.Close()
-		Log("Saved database to disk")
+		util.Log("Saved database to disk")
 
 		os.Exit(0)
 	})
@@ -263,7 +263,7 @@ func main() {
 			return
 		}
 		cat := r.PostForm["category"][0]
-		if !Contains(categoryNames, cat) {
+		if !util.Contains(categoryNames, cat) {
 			writeResponse(r, w, "Invalid Category", "", "./../../new", "Go back to /new")
 			return
 		}
@@ -337,6 +337,6 @@ func main() {
 	//
 
 	p := strconv.Itoa(*flagPort)
-	Log("Initialization complete. Starting server on port " + p)
+	util.Log("Initialization complete. Starting server on port " + p)
 	http.ListenAndServe(":"+p, nil)
 }
