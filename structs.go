@@ -1,6 +1,7 @@
 package main
 
 type Config struct {
+	Port     int      `json:"port"`
 	ID       string   `json:"id"`
 	Secret   string   `json:"secret"`
 	BotToken string   `json:"bot_token"`
