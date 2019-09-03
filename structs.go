@@ -10,15 +10,6 @@ type Config struct {
 	Admins   []string `json:"admins"`
 }
 
-type DiscordMe struct {
-	Nick string `json:"nick"`
-	User struct {
-		Username string `json:"username"`
-		Avatar   string `json:"avatar"`
-	} `json:"user"`
-	Roles []string `json:"roles"`
-}
-
 type User struct {
 	ID        int    `json:"id"`
 	Snowflake string `json:"snowflake" sqlite:"text"`
