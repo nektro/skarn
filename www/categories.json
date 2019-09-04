@@ -7,7 +7,12 @@
     "mov": {
         "name": "Video",
         "icon": "film",
-        "quality": ["Any","480p","720p","1080p","1440p","2160p","4320p","REMUX","ISO","Other"]
+        "quality": [
+            "Any",
+            "480p","720p","1080p","1440p","2160p","4320p",
+            "REMUX","ISO",
+            "Other"
+        ]
     },
     "mus": {
         "name": "Music",
