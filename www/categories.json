@@ -28,11 +28,11 @@
     "xxx": {
         "name": "NSFW",
         "icon": "venus-mars",
-        "quality": ["Any"]
+        "quality": ["Any","Other"]
     },
     "etc": {
         "name": "Unknown",
         "icon": "question",
-        "quality": ["Any"]
+        "quality": ["Any","Other"]
     }
 }
