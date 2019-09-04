@@ -11,14 +11,14 @@
                             <th>Quality</th>
                             <th>Link</th>
                             <th>Requester</th>
-                            {{!-- <th>Points</th> --}}
+                            <th>Points</th>
                             <th>Filler</th>
                             <th>Filled On</th>
                         </tr>
                     </thead>
                     <tbody>
                         {{#each data.requests}}
-                        <tr>
+                        <tr data-id="{{ID}}">
                             <td>{{ID}}</td>
                             <td class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
                             <td>{{AddedOn}}</td>
@@ -26,7 +26,7 @@
                             <td>{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
                             <td><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
                             <td>{{name Owner}}</td>
-                            {{!-- <td><div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div></td> --}}
+                            <td><div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div></td>
                             <td>{{name Filler}}</td>
                             <td>{{FilledOn}}</td>
                         </tr>
@@ -38,5 +38,38 @@
         <style>
             table.table tbody tr td:nth-child(2) i.icon { font-size: 2em; }
         </style>
+        <script>
+            (function() {
+                class C_SP {
+                    constructor() { this.data = new URLSearchParams(); }
+                    add(key, value) { this.data.append(key, value); return this; }
+                }
+                class C_H {
+                    constructor() { this.data = new Headers(); }
+                    add(key, value) { this.data.append(key, value); return this; }
+                }
+                $(document).ready(function() {
+                    $("tr td:nth-child(8) div.label").on("wheel", function(ev) {
+                        const y = ev.originalEvent.deltaY;
+                        const s = -Math.sign(y);
+                        const r = parseInt(this.children[1].textContent);
+                        const v = Math.max(0, r + s);
+                        this.children[1].textContent = v.toString();
+                        const i = this.parentElement.parentElement.dataset.id;
+                        //
+                        fetch("./../api/request/update_score", {
+                            method:"POST",
+                            credentials: "include",
+                            headers: new C_H().add("Content-Type", "application/x-www-form-urlencoded").data,
+                            body: new C_SP().add("id", i).add("score", v).data.toString(),
+                        });
+                    });
+                    $("tr.fill-desc").each((i,e) => {
+                        const el = e.children[1]
+                        el.innerHTML = createTextLinks_(e.children[1].textContent);
+                    });
+                });
+            })();
+        </script>
     </body>
 </html>
