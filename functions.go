@@ -43,6 +43,9 @@ func queryUserBySnowflake(snowflake string) *User {
 	// else
 	id := etc.Database.QueryNextID("users")
 	etc.Database.QueryPrepared(true, F("insert into users values ('%d', '%s', '%s', 0, 0, '', '', '')", id, snowflake, T()))
+	if id == 1 {
+		etc.Database.QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
+	}
 	return queryUserBySnowflake(snowflake)
 }
 
