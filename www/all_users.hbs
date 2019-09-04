@@ -8,7 +8,6 @@
                             <th>Snowflake</th>
                             <th>JoinedOn</th>
                             <th>Member?</th>
-                            <th>Banned?</th>
                             <th>Admin?</th>
                             <th>Username</th>
                             <th>Nickname</th>
@@ -22,7 +21,6 @@
                             <td>{{Snowflake}}</td>
                             <td>{{JoinedOn}}</td>
                             <td class="{{#if IsMember}}positive{{else}}negative{{/if}}"><i class="{{#if IsMember}}check{{else}}times{{/if}} icon"></i></td>
-                            <td class="{{#if IsBanned}}positive{{else}}negative{{/if}}"><i class="{{#if IsBanned}}check{{else}}times{{/if}} icon"></i></td>
                             <td class="{{#if IsAdmin}}positive{{else}}negative{{/if}}"><i class="{{#if IsAdmin}}check{{else}}times{{/if}} icon"></i></td>
                             <td>{{Username}}</td>
                             <td>{{Nickname}}</td>
@@ -34,14 +32,8 @@
             </div>
         </div>
         <style>
-            table.table tbody tr td:nth-child(9) {
-                padding: 0;
-            }
-            table.table tbody tr td:nth-child(9) img {
-                display: block;
-                max-height: 42px;
-                margin: auto;
-            }
+            table.table tbody tr td:nth-child(8) { padding: 0; }
+            table.table tbody tr td:nth-child(8) img { display: block; max-height: 42px; margin: auto; }
         </style>
     </body>
 </html>
