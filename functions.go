@@ -2,6 +2,7 @@ package main
 
 import (
 	"database/sql"
+	"encoding/json"
 	"io/ioutil"
 	"net/http"
 	"net/url"
@@ -224,4 +225,27 @@ func queryRequestById(id string) (*Request, *User, error) {
 	req := reqs[0]
 	own := scanRowsUsers(etc.Database.QueryDoSelect("users", "id", strconv.Itoa(req.Owner)))[0]
 	return &req, &own, nil
+}
+
+func makeAnnouncement(message string) {
+	if len(config.Announce) == 0 {
+		return
+	}
+	urlO, _ := url.Parse(config.Announce)
+	if urlO.Host != "discordapp.com" {
+		return
+	}
+	if !strings.HasPrefix(urlO.Path, "/api/webhooks/") {
+		return
+	}
+
+	parameters := map[string]string{}
+	parameters["content"] = message
+	contentB, _ := json.Marshal(parameters)
+	contentS := string(contentB)
+
+	req, _ := http.NewRequest("POST", urlO.String(), strings.NewReader(contentS))
+	req.Header.Set("User-Agent", "nektro/skarn")
+	req.Header.Set("Content-Type", "application/json")
+	http.DefaultClient.Do(req)
 }

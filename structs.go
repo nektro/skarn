@@ -9,6 +9,7 @@ type Config struct {
 	Members  []string `json:"members"`
 	Admins   []string `json:"admins"`
 	Themes   []string `json:"themes"`
+	Announce string   `json:"announce_webhook_url"`
 }
 
 type User struct {

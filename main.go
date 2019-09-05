@@ -250,6 +250,7 @@ func main() {
 
 		// success
 		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
+		makeAnnouncement(F("**[NEW]** <@%s> created a request for **%s**.", u.Snowflake, t))
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})
 
@@ -285,7 +286,7 @@ func main() {
 		rid := r.PostForm["id"][0]
 		msg := r.PostForm["message"][0]
 		//
-		req, _, err := queryRequestById(rid)
+		req, own, err := queryRequestById(rid)
 		if err != nil {
 			return
 		}
@@ -296,6 +297,7 @@ func main() {
 		etc.Database.QueryDoUpdate("requests", "filler", strconv.Itoa(u.ID), "id", rid)
 		etc.Database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
 		etc.Database.QueryDoUpdate("requests", "response", msg, "id", rid)
+		makeAnnouncement(F("**[FILL]** <@%s>'s request for **%s** was just filled by <@%s>.", own.Snowflake, req.Title, u.Snowflake))
 		fmt.Fprintln(w, "good")
 	})
 
@@ -308,7 +310,7 @@ func main() {
 			return
 		}
 		rid := r.PostForm["id"][0]
-		_, own, err := queryRequestById(rid)
+		req, own, err := queryRequestById(rid)
 		if err != nil {
 			return
 		}
@@ -319,6 +321,7 @@ func main() {
 		etc.Database.QueryDoUpdate("requests", "filler", "-1", "id", rid)
 		etc.Database.QueryDoUpdate("requests", "filled_on", "", "id", rid)
 		etc.Database.QueryDoUpdate("requests", "response", "", "id", rid)
+		makeAnnouncement(F("**[UNFILL]** <@%s>'s just un-filled their request for **%s**.", own.Snowflake, req.Title))
 		fmt.Fprintln(w, "good")
 	})
 
@@ -332,7 +335,7 @@ func main() {
 			return
 		}
 		rid := r.PostForm["id"][0]
-		_, own, err := queryRequestById(rid)
+		req, own, err := queryRequestById(rid)
 		if err != nil {
 			return
 		}
@@ -341,6 +344,7 @@ func main() {
 		}
 		//
 		etc.Database.QueryDelete("requests", "id", rid)
+		makeAnnouncement(F("**[DELETE]** <@%s>'s request for **%s** was just deleted.", own.Snowflake, req.Title))
 		fmt.Fprintln(w, "good")
 	})
 
