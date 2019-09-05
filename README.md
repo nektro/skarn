@@ -29,7 +29,8 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 	"server": "{SERVER_ID}",
 	"members": ["{ROLE_SNOWFLAKE"],
 	"admins": ["{ROLE_SNOWFLAKE"],
-	"themes": ["{THEME_ID}"]
+	"themes": ["{THEME_ID}"],
+	"announce_webhook_url": "{}"
 }
 ```
 - It should be in the above format.
@@ -43,6 +44,9 @@ $ ./skarn
 
 ### Themes
 Skarn supports custom themes through use of the `"themes"` property in your `config.json` to identify a folder or list of folders to overwrite any of the handlebars template files. The location to place themes is at `~/.config/skarn/themes/{THEME_ID}/`
+
+### Announcements
+Using the `"announce_webhook_url"` property you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
 
 ### Deployment
 By signing in with GitHub, you can download pre-built binaries from the *Artifacts* tab of https://circleci.com/gh/nektro/skarn.
