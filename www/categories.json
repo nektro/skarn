@@ -11,7 +11,7 @@
             "Any",
             "480p","720p","1080p","1440p","2160p","4320p",
             "x264","x265","vp8","vp9","AV1",
-            "REMUX","ISO",
+            "REMUX","ISO","VHSRip","DVDRip","BDRip",
             "Other"
         ]
     },
