@@ -25,9 +25,9 @@ type User struct {
 }
 
 type UserComplete struct {
-	U      User `json:"user"`
-	Fills  int  `json:"fills"`
-	Points int  `json:"points"`
+	U       User `json:"user"`
+	Fills   int  `json:"fills"`
+	PointsF int  `json:"points"`
 }
 
 type Request struct {
