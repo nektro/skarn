@@ -183,7 +183,7 @@ func scanRowsUsersComplete(rows *sql.Rows) []UserComplete {
 	result := []UserComplete{}
 	users := scanRowsUsers(rows)
 	for _, u := range users {
-		uid := strconv.FormatInt(int64(u.ID), 10)
+		uid := strconv.Itoa(u.ID)
 		var uc UserComplete
 		uc.U = u
 		uc.Fills = scanInt(etc.Database.QuerySelectFunc("requests", "count", "points", "filler", uid))
