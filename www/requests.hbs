@@ -59,8 +59,8 @@
             function createTextLinks_(text) {
                 return (text || "").replace(/([^\S]|^)(((https?\:\/\/)|(www\.))(\S+))/gi, (match, space, url) => {
                     let hyperlink = url;
-                    if (!hyperlink.match('^https?:\/\/')) {
-                        hyperlink = 'http://' + hyperlink;
+                    if (!hyperlink.match("^https?:\/\/")) {
+                        hyperlink = "http://" + hyperlink;
                     }
                     return space + `<a target="_blank" href="${hyperlink}">${url}</a>`;
                 });
