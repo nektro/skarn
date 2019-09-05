@@ -188,6 +188,8 @@ func scanRowsUsersComplete(rows *sql.Rows) []UserComplete {
 		uc.U = u
 		uc.Fills = scanInt(etc.Database.QuerySelectFunc("requests", "count", "points", "filler", uid))
 		uc.PointsF = scanInt(etc.Database.QuerySelectFunc("requests", "sum", "points", "filler", uid))
+		uc.Requests = scanInt(etc.Database.QuerySelectFunc("requests", "count", "points", "owner", uid))
+		uc.PointsR = scanInt(etc.Database.QuerySelectFunc("requests", "sum", "points", "owner", uid))
 		result = append(result, uc)
 	}
 	return result
