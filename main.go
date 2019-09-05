@@ -322,6 +322,28 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
+	http.HandleFunc("/api/request/delete", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
+		if err != nil {
+			return
+		}
+		if assertPostFormValuesExist(r, "id") != nil {
+			fmt.Fprintln(w, "missing post value")
+			return
+		}
+		rid := r.PostForm["id"][0]
+		_, own, err := queryRequestById(rid)
+		if err != nil {
+			return
+		}
+		if u.ID != own.ID && !u.IsAdmin {
+			return
+		}
+		//
+		etc.Database.QueryDelete("requests", "id", rid)
+		fmt.Fprintln(w, "good")
+	})
+
 	//
 
 	p := strconv.Itoa(config.Port)
