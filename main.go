@@ -280,14 +280,12 @@ func main() {
 			return
 		}
 		if assertPostFormValuesExist(r, "id", "message") != nil {
-			fmt.Fprintln(w, "missing post value")
 			return
 		}
 		rid := r.PostForm["id"][0]
 		msg := r.PostForm["message"][0]
 		//
 		if !isInt(rid) {
-			fmt.Fprintln(w, "invalid request id")
 			return
 		}
 		uid := strconv.FormatInt(int64(u.ID), 10)
