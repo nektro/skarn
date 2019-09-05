@@ -299,6 +299,29 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
+	http.HandleFunc("/api/request/unfill", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
+		if err != nil {
+			return
+		}
+		if assertPostFormValuesExist(r, "id") != nil {
+			return
+		}
+		rid := r.PostForm["id"][0]
+		_, own, err := queryRequestById(rid)
+		if err != nil {
+			return
+		}
+		if u.ID != own.ID && !u.IsAdmin {
+			return
+		}
+		//
+		etc.Database.QueryDoUpdate("requests", "filler", "-1", "id", rid)
+		etc.Database.QueryDoUpdate("requests", "filled_on", "", "id", rid)
+		etc.Database.QueryDoUpdate("requests", "response", "", "id", rid)
+		fmt.Fprintln(w, "good")
+	})
+
 	//
 
 	p := strconv.Itoa(config.Port)
