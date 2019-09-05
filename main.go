@@ -288,6 +288,10 @@ func main() {
 		if !isInt(rid) {
 			return
 		}
+		req := scanRowsRequests(etc.Database.QueryDoSelect("requests", "id", rid))[0]
+		if req.Filled {
+			return
+		}
 		//
 		etc.Database.QueryDoUpdate("requests", "filler", strconv.Itoa(u.ID), "id", rid)
 		etc.Database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
