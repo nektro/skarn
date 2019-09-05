@@ -212,3 +212,16 @@ func isInt(s string) bool {
 	_, err := strconv.ParseInt(s, 10, 32)
 	return err == nil
 }
+
+func queryRequestById(id string) (*Request, *User, error) {
+	if !isInt(id) {
+		return nil, nil, E("non-ID ID")
+	}
+	reqs := scanRowsRequests(etc.Database.QueryDoSelect("requests", "id", id))
+	if len(reqs) == 0 {
+		return nil, nil, E("unable to find specified request")
+	}
+	req := reqs[0]
+	own := scanRowsUsers(etc.Database.QueryDoSelect("users", "id", strconv.Itoa(req.Owner)))[0]
+	return &req, &own, nil
+}

@@ -285,10 +285,10 @@ func main() {
 		rid := r.PostForm["id"][0]
 		msg := r.PostForm["message"][0]
 		//
-		if !isInt(rid) {
+		req, _, err := queryRequestById(rid)
+		if err != nil {
 			return
 		}
-		req := scanRowsRequests(etc.Database.QueryDoSelect("requests", "id", rid))[0]
 		if req.Filled {
 			return
 		}
