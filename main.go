@@ -288,9 +288,8 @@ func main() {
 		if !isInt(rid) {
 			return
 		}
-		uid := strconv.FormatInt(int64(u.ID), 10)
 		//
-		etc.Database.QueryDoUpdate("requests", "filler", uid, "id", rid)
+		etc.Database.QueryDoUpdate("requests", "filler", strconv.Itoa(u.ID), "id", rid)
 		etc.Database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
 		etc.Database.QueryDoUpdate("requests", "response", msg, "id", rid)
 		fmt.Fprintln(w, "good")
