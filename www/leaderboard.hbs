@@ -1,17 +1,17 @@
             <div class="ui segment">
                 <h2 class="ui header">Leaderboard</h2>
                 <p>The top 25 users who have filled requests.</p>
-                <table class="ui celled single line sortable table">
+                <table class="ui celled single line table">
                     <thead>
                         <tr>
-                            <th></th>
+                            <th data-sort-method="none"></th>
                             <th>Name</th>
-                            <th></th>
-                            <th>Fills</th>
-                            <th class="descending">Points</th>
-                            <th></th>
-                            <th>Requests</th>
-                            <th>Points</th>
+                            <th data-sort-method="none"></th>
+                            <th data-sort-method="number">Fills</th>
+                            <th data-sort-method="number" data-sort-default="">Points</th>
+                            <th data-sort-method="none"></th>
+                            <th data-sort-method="number">Requests</th>
+                            <th data-sort-method="number">Points</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -35,14 +35,15 @@
             table.table tbody tr td:nth-child(1) { padding: 0; }
             table.table tbody tr td:nth-child(1) img { display: block; max-height: 42px; margin: auto; }
         </style>
-        <script src="https://semantic-ui.com/javascript/library/tablesort.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.1.0/tablesort.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/tablesort/5.1.0/sorts/tablesort.number.min.js"></script>
         <script>
             (function() {
                 $(document).ready(function() {
-                    $("table.sortable").tablesort();
-                    $("table.sortable thead th:nth-child(5)").click();
-                    $("table.sortable thead th:nth-child(5)").click();
-                })
+                    new Tablesort(document.querySelector("table"), {
+                        descending: true,
+                    })
+                });
             })();
         </script>
     </body>
