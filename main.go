@@ -9,6 +9,7 @@ import (
 	"os"
 	"strconv"
 	"time"
+	"strings"
 
 	"github.com/aymerick/raymond"
 	"github.com/nektro/go-util/util"
@@ -247,6 +248,7 @@ func main() {
 		}
 		i := etc.Database.QueryNextID("requests")
 		o := u.ID
+		t = strings.Replace(t, "@", "")
 
 		// success
 		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
