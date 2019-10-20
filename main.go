@@ -248,7 +248,7 @@ func main() {
 		}
 		i := etc.Database.QueryNextID("requests")
 		o := u.ID
-		t = strings.Replace(t, "@", "")
+		t = strings.ReplaceAll(t, "@", "")
 
 		// success
 		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
