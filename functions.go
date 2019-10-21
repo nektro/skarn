@@ -273,5 +273,5 @@ func QueryDoSelectAll(table string) *sql.Rows {
 }
 
 func QueryDelete(table, col, val string) *sql.Rows {
-	return etc.Database.QueryPrepared(false, F("delete from %s where %s = ?", table, col), val)
+	return etc.Database.QueryPrepared(true, F("delete from %s where %s = ?", table, col), val)
 }
