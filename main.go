@@ -34,7 +34,7 @@ func main() {
 
 	//
 
-	etc.Init("skarn", &config)
+	etc.Init("skarn", &config, "./verify", saveOAuth2Info)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
 
 	etc.MFS.Add(http.Dir("./www/"))
@@ -92,7 +92,6 @@ func main() {
 
 	//
 
-	http.HandleFunc("/", http.FileServer(etc.MFS).ServeHTTP)
 	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID))
 	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderDiscord, config.ID, config.Secret, saveOAuth2Info, "./verify"))
 
