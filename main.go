@@ -8,6 +8,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/aymerick/raymond"
@@ -246,6 +247,7 @@ func main() {
 		}
 		i := etc.Database.QueryNextID("requests")
 		o := u.ID
+		t = strings.ReplaceAll(t, "@", "@\u200D")
 
 		// success
 		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
