@@ -31,11 +31,11 @@ func saveOAuth2Info(w http.ResponseWriter, r *http.Request, provider string, id 
 	sess.Values["user"] = id
 	sess.Save(r, w)
 	queryUserBySnowflake(id)
-	etc.Database.QueryDoUpdate("users", "username", name, "snowflake", id)
+	QueryDoUpdate("users", "username", name, "snowflake", id)
 }
 
 func queryUserBySnowflake(snowflake string) *User {
-	rows := etc.Database.QueryDoSelect("users", "snowflake", snowflake)
+	rows := QueryDoSelect("users", "snowflake", snowflake)
 	if rows.Next() {
 		ru := scanUser(rows)
 		rows.Close()
@@ -45,7 +45,7 @@ func queryUserBySnowflake(snowflake string) *User {
 	id := etc.Database.QueryNextID("users")
 	etc.Database.QueryPrepared(true, F("insert into users values ('%d', '%s', '%s', 0, 0, '', '', '')", id, snowflake, T()))
 	if id == 1 {
-		etc.Database.QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
+		QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
 	}
 	return queryUserBySnowflake(snowflake)
 }
@@ -186,10 +186,10 @@ func scanRowsUsersComplete(rows *sql.Rows) []UserComplete {
 		uid := strconv.Itoa(u.ID)
 		var uc UserComplete
 		uc.U = u
-		uc.Fills = scanInt(etc.Database.QuerySelectFunc("requests", "count", "points", "filler", uid))
-		uc.PointsF = scanInt(etc.Database.QuerySelectFunc("requests", "sum", "points", "filler", uid))
-		uc.Requests = scanInt(etc.Database.QuerySelectFunc("requests", "count", "points", "owner", uid))
-		uc.PointsR = scanInt(etc.Database.QuerySelectFunc("requests", "sum", "points", "owner", uid))
+		uc.Fills = scanInt(QuerySelectFunc("requests", "count", "points", "filler", uid))
+		uc.PointsF = scanInt(QuerySelectFunc("requests", "sum", "points", "filler", uid))
+		uc.Requests = scanInt(QuerySelectFunc("requests", "count", "points", "owner", uid))
+		uc.PointsR = scanInt(QuerySelectFunc("requests", "sum", "points", "owner", uid))
 		result = append(result, uc)
 	}
 	return result
@@ -220,12 +220,12 @@ func queryRequestById(id string) (*Request, *User, error) {
 	if !isInt(id) {
 		return nil, nil, E("non-ID ID")
 	}
-	reqs := scanRowsRequests(etc.Database.QueryDoSelect("requests", "id", id))
+	reqs := scanRowsRequests(QueryDoSelect("requests", "id", id))
 	if len(reqs) == 0 {
 		return nil, nil, E("unable to find specified request")
 	}
 	req := reqs[0]
-	own := scanRowsUsers(etc.Database.QueryDoSelect("users", "id", strconv.Itoa(req.Owner)))[0]
+	own := scanRowsUsers(QueryDoSelect("users", "id", strconv.Itoa(req.Owner)))[0]
 	return &req, &own, nil
 }
 
@@ -250,4 +250,28 @@ func makeAnnouncement(message string) {
 	req.Header.Set("User-Agent", "nektro/skarn")
 	req.Header.Set("Content-Type", "application/json")
 	http.DefaultClient.Do(req)
+}
+
+//
+//
+//
+
+func QueryDoSelect(table, col, val string) *sql.Rows {
+	return etc.Database.Build().Se("*").Fr(table).Wh(col, val).Exe()
+}
+
+func QuerySelectFunc(table, f, fcol, col, val string) *sql.Rows {
+	return etc.Database.Build().Se(F("%s(%s)", f, fcol)).Fr(table).Wh(col, val).Exe()
+}
+
+func QueryDoUpdate(table, ucol, uval, col, val string) *sql.Rows {
+	return etc.Database.Build().Up(table, ucol, uval).Wh(col, val).Exe()
+}
+
+func QueryDoSelectAll(table string) *sql.Rows {
+	return etc.Database.Build().Se("*").Fr(table).Exe()
+}
+
+func QueryDelete(table, col, val string) *sql.Rows {
+	return etc.Database.QueryPrepared(false, F("delete from %s where %s = ?", table, col), val)
 }

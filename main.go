@@ -74,7 +74,7 @@ func main() {
 	})
 
 	raymond.RegisterHelper("name", func(userID int) string {
-		usrs := scanRowsUsers(etc.Database.QueryDoSelect("users", "id", strconv.FormatInt(int64(userID), 10)))
+		usrs := scanRowsUsers(QueryDoSelect("users", "id", strconv.FormatInt(int64(userID), 10)))
 		if len(usrs) == 0 {
 			return ""
 		}
@@ -127,21 +127,21 @@ func main() {
 		var dat discord.GuildMember
 		json.Unmarshal(res, &dat)
 
-		etc.Database.QueryDoUpdate("users", "nickname", dat.Nickname, "snowflake", snowflake)
-		etc.Database.QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
+		QueryDoUpdate("users", "nickname", dat.Nickname, "snowflake", snowflake)
+		QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
 
 		allowed := false
 		if containsAny(dat.Roles, config.Members) {
-			etc.Database.QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
+			QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
 			allowed = true
 		}
 		if containsAny(dat.Roles, config.Admins) {
-			etc.Database.QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
+			QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
 			allowed = true
 		}
 		if !allowed {
-			etc.Database.QueryDoUpdate("users", "is_member", "0", "snowflake", snowflake)
-			etc.Database.QueryDoUpdate("users", "is_admin", "0", "snowflake", snowflake)
+			QueryDoUpdate("users", "is_member", "0", "snowflake", snowflake)
+			QueryDoUpdate("users", "is_admin", "0", "snowflake", snowflake)
 			writeResponse(r, w, "Acess Denied", "No valid Discord Roles found.", "", "")
 			return
 		}
@@ -160,7 +160,7 @@ func main() {
 		}
 		writePage(r, w, u, "/requests.hbs", "open", "Open Requests", map[string]interface{}{
 			"tagline":  "All of the requests that are currently unfilled can be found from here.",
-			"requests": scanRowsRequests(etc.Database.QueryDoSelect("requests", "filler", "-1")),
+			"requests": scanRowsRequests(QueryDoSelect("requests", "filler", "-1")),
 		})
 	})
 
@@ -182,7 +182,7 @@ func main() {
 		id := strconv.FormatInt(int64(u.ID), 10)
 		writePage(r, w, u, "/requests.hbs", "mine", "My Requests", map[string]interface{}{
 			"tagline":  "All requests filed by you are here.",
-			"requests": scanRowsRequests(etc.Database.QueryDoSelect("requests", "owner", id)),
+			"requests": scanRowsRequests(QueryDoSelect("requests", "owner", id)),
 		})
 	})
 
@@ -192,7 +192,7 @@ func main() {
 			return
 		}
 		writePage(r, w, u, "/leaderboard.hbs", "users", "Leaderboard", map[string]interface{}{
-			"users": scanRowsUsersComplete(etc.Database.QueryDoSelect("users", "is_member", "1")),
+			"users": scanRowsUsersComplete(QueryDoSelect("users", "is_member", "1")),
 		})
 	})
 
@@ -202,7 +202,7 @@ func main() {
 			return
 		}
 		writePage(r, w, u, "/all_users.hbs", "a/u", "All Users", map[string]interface{}{
-			"users": scanRowsUsers(etc.Database.QueryDoSelectAll("users")),
+			"users": scanRowsUsers(QueryDoSelectAll("users")),
 		})
 	})
 
@@ -212,7 +212,7 @@ func main() {
 			return
 		}
 		writePage(r, w, u, "/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
-			"requests": scanRowsRequests(etc.Database.QueryDoSelectAll("requests")),
+			"requests": scanRowsRequests(QueryDoSelectAll("requests")),
 		})
 	})
 
@@ -271,7 +271,7 @@ func main() {
 			return
 		}
 		//
-		etc.Database.QueryDoUpdate("requests", "points", scr, "id", rid)
+		QueryDoUpdate("requests", "points", scr, "id", rid)
 		fmt.Fprintln(w, "good")
 	})
 
@@ -294,9 +294,9 @@ func main() {
 			return
 		}
 		//
-		etc.Database.QueryDoUpdate("requests", "filler", strconv.Itoa(u.ID), "id", rid)
-		etc.Database.QueryDoUpdate("requests", "filled_on", T(), "id", rid)
-		etc.Database.QueryDoUpdate("requests", "response", msg, "id", rid)
+		QueryDoUpdate("requests", "filler", strconv.Itoa(u.ID), "id", rid)
+		QueryDoUpdate("requests", "filled_on", T(), "id", rid)
+		QueryDoUpdate("requests", "response", msg, "id", rid)
 		makeAnnouncement(F("**[FILL]** <@%s>'s request for **%s** was just filled by <@%s>.", own.Snowflake, req.Title, u.Snowflake))
 		fmt.Fprintln(w, "good")
 	})
@@ -318,9 +318,9 @@ func main() {
 			return
 		}
 		//
-		etc.Database.QueryDoUpdate("requests", "filler", "-1", "id", rid)
-		etc.Database.QueryDoUpdate("requests", "filled_on", "", "id", rid)
-		etc.Database.QueryDoUpdate("requests", "response", "", "id", rid)
+		QueryDoUpdate("requests", "filler", "-1", "id", rid)
+		QueryDoUpdate("requests", "filled_on", "", "id", rid)
+		QueryDoUpdate("requests", "response", "", "id", rid)
 		makeAnnouncement(F("**[UNFILL]** <@%s>'s just un-filled their request for **%s**.", own.Snowflake, req.Title))
 		fmt.Fprintln(w, "good")
 	})
@@ -343,7 +343,7 @@ func main() {
 			return
 		}
 		//
-		etc.Database.QueryDelete("requests", "id", rid)
+		QueryDelete("requests", "id", rid)
 		makeAnnouncement(F("**[DELETE]** <@%s>'s request for **%s** was just deleted.", own.Snowflake, req.Title))
 		fmt.Fprintln(w, "good")
 	})
