@@ -51,7 +51,7 @@ func main() {
 	etc.Database.CreateTableStruct("users", User{})
 	etc.Database.CreateTableStruct("requests", Request{})
 
-	etc.RunOnClose(func() {
+	util.RunOnClose(func() {
 		util.Log("Gracefully shutting down...")
 
 		etc.Database.Close()
