@@ -17,7 +17,7 @@
                     <tbody>
                         {{#each data.requests}}
                         <tr data-id="{{ID}}">
-                            <td>{{ID}}</td>
+                            <td>{{ID}}.2</td>
                             <td class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
                             <td>
                                 <div>{{Title}}</div>
@@ -42,6 +42,7 @@
                         </tr>
                         {{#if Filled}}
                         <tr class="fill-desc">
+                            <td>{{ID}}.1</td>
                             <td><i class="angle double right icon"></i></td>
                             <td colspan="3">{{Response}}</td>
                             <td></td>
