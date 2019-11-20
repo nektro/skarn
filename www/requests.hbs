@@ -3,7 +3,7 @@
                 <p>{{data.tagline}}</p>
                 <table class="ui celled single line compact table">
                     <thead>
-                        <th data-sort-method="number">ID</th>
+                        <th data-sort-method="number" data-sort-default="">ID</th>
                         <th data-sort-method="none"></th>
                         <th>Title</th>
                         <th data-sort-method="none">Quality</th>
@@ -83,6 +83,7 @@
                 }
                 $(document).ready(function() {
                     new Tablesort(document.querySelector("table"), {
+                        descending: true,
                     })
                 });
                 $(document).ready(function() {
