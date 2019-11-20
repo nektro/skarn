@@ -151,8 +151,8 @@
                         .catch(x => {});
                     });
                     $("tr.fill-desc").each((i,e) => {
-                        const el = e.children[1]
-                        el.innerHTML = createTextLinks_(e.children[1].textContent);
+                        const el = e.children[2]
+                        el.innerHTML = createTextLinks_(e.children[2].textContent);
                     });
                 });
             })();
