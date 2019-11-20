@@ -3,13 +3,12 @@
                 <p>{{data.tagline}}</p>
                 <table class="ui celled single line compact table">
                     <thead>
-                        <th data-sort-method="number" data-sort-default="">ID</th>
-                        <th data-sort-method="none"></th>
-                        <th>Title</th>
+                        <th data-sort-method="number" data-sort-default=""></th>
+                        <th data-sort-method="none">Title</th>
                         <th data-sort-method="none">Quality</th>
                         <th data-sort-method="none">Reference</th>
                         <th data-sort-method="number">Points</th>
-                        <th>Requester</th>
+                        <th data-sort-method="none">Requester</th>
                         <th data-sort-method="none"></th>
                         <th data-sort-method="none">Unfill</th>
                         <th data-sort-method="none">Delete</th>
@@ -17,8 +16,7 @@
                     <tbody>
                         {{#each data.requests}}
                         <tr data-id="{{ID}}">
-                            <td>{{ID}}.2</td>
-                            <td class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
+                            <td data-sort="{{ID}}.2" class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
                             <td>
                                 <div>{{Title}}</div>
                                 <div>{{Description}}</div>
@@ -42,8 +40,7 @@
                         </tr>
                         {{#if Filled}}
                         <tr class="fill-desc">
-                            <td>{{ID}}.1</td>
-                            <td><i class="angle double right icon"></i></td>
+                            <td data-sort="{{ID}}.1"><i class="angle double right icon"></i></td>
                             <td colspan="3">{{Response}}</td>
                             <td></td>
                             <td colspan="4">Filled by <i class="user icon"></i> {{name Filler}}</td>
@@ -55,12 +52,10 @@
             </div>
         </div>
         <style>
-            .table thead th:nth-child(1) { display: none; }
-            .table tbody tr td:nth-child(1) { display: none; }
-            .table tbody tr td:nth-child(2) i.icon { font-size: 2em; }
-            .table tbody tr td:nth-child(3) { white-space: normal; }
-            .table tbody tr td:nth-child(3) div:nth-child(1) { font-weight: bold; }
-            .table tbody tr td:nth-child(7) div.label { cursor: ns-resize; }
+            .table tbody tr td:nth-child(1) i.icon { font-size: 2em; }
+            .table tbody tr td:nth-child(2) { white-space: normal; }
+            .table tbody tr td:nth-child(2) div:nth-child(1) { font-weight: bold; }
+            .table tbody tr td:nth-child(6) div.label { cursor: ns-resize; }
             .ui.table > tbody > tr.fill-desc > td { padding: 0 .5em; }
         </style>
         <script>
@@ -154,8 +149,8 @@
                         .catch(x => {});
                     });
                     $("tr.fill-desc").each((i,e) => {
-                        const el = e.children[2]
-                        el.innerHTML = createTextLinks_(e.children[2].textContent);
+                        const el = e.children[1]
+                        el.innerHTML = createTextLinks_(e.children[1].textContent);
                     });
                 });
             })();
