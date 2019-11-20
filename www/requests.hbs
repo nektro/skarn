@@ -82,8 +82,10 @@
                     add(key, value) { this.data.append(key, value); return this; }
                 }
                 $(document).ready(function() {
-                    new Tablesort(document.querySelector("table"), {
-                        descending: true,
+                    Array.from(document.querySelectorAll("table")).forEach(function(t) {
+                        new Tablesort(t, {
+                            descending: true,
+                        })
                     })
                 });
                 $(document).ready(function() {
