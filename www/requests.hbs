@@ -3,16 +3,16 @@
                 <p>{{data.tagline}}</p>
                 <table class="ui celled single line compact table">
                     <thead>
-                        <th>ID</th>
-                        <th></th>
+                        <th data-sort-method="number">ID</th>
+                        <th data-sort-method="none"></th>
                         <th>Title</th>
-                        <th>Quality</th>
-                        <th>Reference</th>
-                        <th>Points</th>
+                        <th data-sort-method="none">Quality</th>
+                        <th data-sort-method="none">Reference</th>
+                        <th data-sort-method="number">Points</th>
                         <th>Requester</th>
-                        <th></th>
-                        <th>Unfill</th>
-                        <th>Delete</th>
+                        <th data-sort-method="none"></th>
+                        <th data-sort-method="none">Unfill</th>
+                        <th data-sort-method="none">Delete</th>
                     </thead>
                     <tbody>
                         {{#each data.requests}}
@@ -81,6 +81,10 @@
                     constructor() { this.data = new Headers(); }
                     add(key, value) { this.data.append(key, value); return this; }
                 }
+                $(document).ready(function() {
+                    new Tablesort(document.querySelector("table"), {
+                    })
+                });
                 $(document).ready(function() {
                     $("tr td:nth-child(5) div.label").on("wheel", function(ev) {
                         const y = ev.originalEvent.deltaY;
