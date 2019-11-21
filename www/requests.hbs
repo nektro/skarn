@@ -15,14 +15,14 @@
                     <tbody>
                         {{#each data.requests}}
                         <tr data-id="{{ID}}">
-                            <td data-sort="{{ID}}.2" class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
-                            <td>
+                            <td data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
+                            <td class="b">
                                 <div>{{Title}}</div>
                                 <div>{{Description}}</div>
                             </td>
-                            <td>{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
-                            <td><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                            <td>
+                            <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
+                            <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
+                            <td class="e">
                                 {{#if user.IsAdmin}}
                                 <div class="ui label">
                                     <i class="arrows alternate vertical icon"></i>
@@ -32,8 +32,8 @@
                                 <span>{{Points}}</span>
                                 {{/if}}
                             </td>
-                            <td><i class="user icon"></i> {{name Owner}}</td>
-                            <td>{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
+                            <td class="f"><i class="user icon"></i> {{name Owner}}</td>
+                            <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
@@ -60,14 +60,14 @@
                             {{#each data.requests}}
                             {{#unless Filled}}
                             <tr data-id="{{ID}}">
-                                <td data-sort="{{ID}}.2" class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
-                                <td>
+                                <td class="" data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
+                                <td class="b">
                                     <div>{{Title}}</div>
                                     <div>{{Description}}</div>
                                 </td>
-                                <td>{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
-                                <td><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                                <td>
+                                <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
+                                <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
+                                <td class="e">
                                     {{#if user.IsAdmin}}
                                     <div class="ui label">
                                         <i class="arrows alternate vertical icon"></i>
@@ -77,9 +77,9 @@
                                     <span>{{Points}}</span>
                                     {{/if}}
                                 </td>
-                                <td><i class="user icon"></i> {{name Owner}}</td>
-                                <td>{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
-                                <td>{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
+                                <td class="f"><i class="user icon"></i> {{name Owner}}</td>
+                                <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
+                                <td class="i">{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
                             </tr>
                             {{/unless}}
                             {{/each}}
@@ -102,14 +102,14 @@
                             {{#each data.requests}}
                             {{#if Filled}}
                             <tr data-id="{{ID}}">
-                                <td data-sort="{{ID}}.2" class="{{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
-                                <td>
+                                <td class="" data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
+                                <td class="b">
                                     <div>{{Title}}</div>
                                     <div>{{Description}}</div>
                                 </td>
-                                <td>{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
-                                <td><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                                <td>
+                                <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
+                                <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
+                                <td class="e">
                                     {{#if user.IsAdmin}}
                                     <div class="ui label">
                                         <i class="arrows alternate vertical icon"></i>
@@ -119,9 +119,9 @@
                                     <span>{{Points}}</span>
                                     {{/if}}
                                 </td>
-                                <td><i class="user icon"></i> {{name Owner}}</td>
-                                <td>{{#equal Owner user.ID}}{{#if Filled}}<a class="ui button"><i class="undo icon"></i></a>{{/if}}{{/equal}}</td>
-                                <td>{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
+                                <td class="f"><i class="user icon"></i> {{name Owner}}</td>
+                                <td class="h">{{#equal Owner user.ID}}{{#if Filled}}<a class="ui button"><i class="undo icon"></i></a>{{/if}}{{/equal}}</td>
+                                <td class="i">{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
                             </tr>
                             <tr class="fill-desc">
                                 <td data-sort="{{ID}}.1"><i class="angle double right icon"></i></td>
