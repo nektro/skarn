@@ -60,7 +60,7 @@
                             {{#each data.requests}}
                             {{#unless Filled}}
                             <tr data-id="{{ID}}">
-                                <td class="" data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
+                                <td data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
                                 <td class="b">
                                     <div>{{Title}}</div>
                                     <div>{{Description}}</div>
@@ -102,7 +102,7 @@
                             {{#each data.requests}}
                             {{#if Filled}}
                             <tr data-id="{{ID}}">
-                                <td class="" data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
+                                <td data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
                                 <td class="b">
                                     <div>{{Title}}</div>
                                     <div>{{Description}}</div>
