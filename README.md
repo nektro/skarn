@@ -77,10 +77,5 @@ When making a pull request, please have it be associated with an issue and make 
 - Meghan#2032 on https://discord.gg/P6Y4zQC
 - https://twitter.com/nektro
 
-## Donate
-Really like this project and want to support me and my continued development in open source? I'm on buymeacoffee.com!
-
-[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/nektro)
-
 ## License
 Apache 2.0
