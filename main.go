@@ -189,6 +189,16 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		writePage(r, w, u, "/stats.hbs", "stats", "Statistics", map[string]interface{}{
+			//
+		})
+	})
+
 	http.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, true)
 		if err != nil {
@@ -341,6 +351,18 @@ func main() {
 		QueryDelete("requests", "id", rid)
 		makeAnnouncement(F("**[DELETE]** <@%s>'s request for **%s** was just deleted.", own.Snowflake, req.Title))
 		fmt.Fprintln(w, "good")
+	})
+
+	http.HandleFunc("/api/stats", func(w http.ResponseWriter, r *http.Request) {
+		_, _, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		bys, _ := json.Marshal(map[string]interface{}{
+			"requests_over_time": requestsOverTime(),
+		})
+		w.Header().Add("content-type", "application/json")
+		fmt.Fprintln(w, string(bys))
 	})
 
 	//

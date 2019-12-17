@@ -1,0 +1,78 @@
+            <div class="ui segment">
+                <h2 class="ui header">Statistics</h2>
+                <p>View reports on requests and fills.</p>
+                <canvas id="myChart" width="600" height="600"></canvas>
+            </div>
+        </div>
+        <br><br>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.css" integrity="sha256-aa0xaJgmK/X74WM224KMQeNQC2xYKwlAt08oZqjeF0E=" crossorigin="anonymous" />
+        <style>
+        </style>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.24.0/moment.min.js" integrity="sha256-4iQZ6BVL4qNKlQ27TExEhBN1HFPvAvAMbFavKKosSWQ=" crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.3/Chart.min.js" integrity="sha256-R4pqcOYV8lt7snxMQO/HSbVCFRPMdrhAFMH+vr9giYI=" crossorigin="anonymous"></script>
+        <script>
+            (function() {
+                $(document).ready(function() {
+                    fetch("./api/stats").then(x => x.json()).then(x => {
+                        console.log(x);
+                        const timeFormat = "YYYY-MM-DD HH:mm:ss";
+                        {
+                            const r = x.requests_over_time.map(v => v.added_on).sort();
+                            const f = x.requests_over_time.map(v => v.filled_on).filter(v => v.length > 0).sort();
+                            console.log(r);
+                            console.log(f);
+                            const ctx = document.getElementById("myChart").getContext("2d");
+                            new Chart(ctx, {
+                                type: "line",
+                                data: {
+                                    datasets: [
+                                        {
+                                            label: "# of Requests",
+                                            data: r.map((v,i) => ({x:v, y:i+1})),
+                                            backgroundColor: "rgba(255, 99, 132, 0.5)",
+                                            borderColor: "rgba(255, 99, 132, 1)",
+                                            borderWidth: 1,
+                                            lineTension: 0.1,
+                                        },
+                                        {
+                                            label: "# of Fills",
+                                            data: f.map((v,i) => ({x:v, y:i+1})),
+                                            backgroundColor: "rgba(75, 192, 192, 0.5)",
+                                            borderColor: "rgb(75, 192, 192)",
+                                            borderWidth: 1,
+                                            lineTension: 0.1,
+                                        }
+                                    ],
+                                },
+                                options: {
+                                    scales: {
+                                        xAxes: [{
+                                            type: "time",
+                                            display: true,
+                                            ticks: {
+                                                major: {
+                                                    fontStyle: "bold",
+                                                    fontColor: "#FF0000"
+                                                }
+                                            }
+                                        }],
+                                        yAxes: [{
+                                            display: true,
+                                            ticks: {
+                                                callback: function(value) {
+                                                    if (!(value % 1)) {
+                                                        return Number(value).toFixed(0);
+                                                    }
+                                                }
+                                            }
+                                        }]
+                                    },
+                                },
+                            });
+                        }
+                    });
+                });
+            })()
+        </script>
+    </body>
+</html>

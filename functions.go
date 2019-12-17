@@ -273,3 +273,16 @@ func makeAnnouncement(message string) {
 	req.Header.Set("Content-Type", "application/json")
 	http.DefaultClient.Do(req)
 }
+
+func requestsOverTime() interface{} {
+	type reqStat struct {
+		AddedOn  string `json:"added_on"`
+		FilledOn string `json:"filled_on"`
+	}
+	reqsRaw := scanRowsRequests(QueryDoSelectAll("requests"))
+	reqsNew := []reqStat{}
+	for _, item := range reqsRaw {
+		reqsNew = append(reqsNew, reqStat{AddedOn: item.AddedOn, FilledOn: item.FilledOn})
+	}
+	return reqsNew
+}
