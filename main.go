@@ -86,8 +86,8 @@ func main() {
 
 	//
 
-	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderDiscord, config.ID))
-	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderDiscord, config.ID, config.Secret, saveOAuth2Info, "./verify"))
+	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], config.ID))
+	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], config.ID, config.Secret, saveOAuth2Info, "./verify"))
 
 	http.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
