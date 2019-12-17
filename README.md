@@ -62,13 +62,13 @@ $ ./scripts/build/all.sh
 ```
 
 ## Contributing
-We take issues all the time right here on GitHub. We use labels extensively to show the progress through the fixing process. Question issues are okay but make sure to close the issue when it's been answered!
-
 [![issues](https://img.shields.io/github/issues/nektro/skarn.svg)](https://github.com/nektro/skarn/issues)
+[![pulls](https://img.shields.io/github/issues-pr/nektro/skarn.svg)](https://github.com/nektro/skarn/pulls)
+
+We take issues all the time right here on GitHub. We use labels extensively to show the progress through the fixing process. Question issues are okay but make sure to close the issue when it's been answered!
 
 When making a pull request, please have it be associated with an issue and make a comment on the issue saying that you're working on it so everyone else knows what's going on :D
 
-[![pulls](https://img.shields.io/github/issues-pr/nektro/skarn.svg)](https://github.com/nektro/skarn/pulls)
 
 ## Contact
 - hello@nektro.net
