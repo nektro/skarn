@@ -16,7 +16,6 @@ import (
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
 	oauth2 "github.com/nektro/go.oauth2"
-	"github.com/rakyll/statik/fs"
 	"github.com/valyala/fastjson"
 
 	. "github.com/nektro/go-util/alias"
@@ -37,12 +36,6 @@ func main() {
 
 	etc.Init("skarn", &config, "./verify", saveOAuth2Info)
 	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
-
-	etc.MFS.Add(http.Dir("./www/"))
-
-	statikFS, err := fs.New()
-	util.DieOnError(err)
-	etc.MFS.Add(http.FileSystem(statikFS))
 
 	catf, _ := etc.MFS.Open("/categories.json")
 	catb, _ := ioutil.ReadAll(catf)
