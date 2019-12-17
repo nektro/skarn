@@ -16,6 +16,28 @@ import (
 	. "github.com/nektro/go-util/alias"
 )
 
+//
+//
+
+func QueryDoSelect(table, col, val string) *sql.Rows {
+	return etc.Database.Build().Se("*").Fr(table).Wh(col, val).Exe()
+}
+func QuerySelectFunc(table, f, fcol, col, val string) *sql.Rows {
+	return etc.Database.Build().Se(F("%s(%s)", f, fcol)).Fr(table).Wh(col, val).Exe()
+}
+func QueryDoUpdate(table, ucol, uval, col, val string) *sql.Rows {
+	return etc.Database.Build().Up(table, ucol, uval).Wh(col, val).Exe()
+}
+func QueryDoSelectAll(table string) *sql.Rows {
+	return etc.Database.Build().Se("*").Fr(table).Exe()
+}
+func QueryDelete(table, col, val string) *sql.Rows {
+	return etc.Database.QueryPrepared(true, F("delete from %s where %s = ?", table, col), val)
+}
+
+//
+//
+
 func isLoggedIn(r *http.Request) bool {
 	return isLoggedInS(etc.GetSession(r))
 }
@@ -250,28 +272,4 @@ func makeAnnouncement(message string) {
 	req.Header.Set("User-Agent", "nektro/skarn")
 	req.Header.Set("Content-Type", "application/json")
 	http.DefaultClient.Do(req)
-}
-
-//
-//
-//
-
-func QueryDoSelect(table, col, val string) *sql.Rows {
-	return etc.Database.Build().Se("*").Fr(table).Wh(col, val).Exe()
-}
-
-func QuerySelectFunc(table, f, fcol, col, val string) *sql.Rows {
-	return etc.Database.Build().Se(F("%s(%s)", f, fcol)).Fr(table).Wh(col, val).Exe()
-}
-
-func QueryDoUpdate(table, ucol, uval, col, val string) *sql.Rows {
-	return etc.Database.Build().Up(table, ucol, uval).Wh(col, val).Exe()
-}
-
-func QueryDoSelectAll(table string) *sql.Rows {
-	return etc.Database.Build().Se("*").Fr(table).Exe()
-}
-
-func QueryDelete(table, col, val string) *sql.Rows {
-	return etc.Database.QueryPrepared(true, F("delete from %s where %s = ?", table, col), val)
 }
