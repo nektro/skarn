@@ -30,7 +30,7 @@
                             <td><div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div></td>
                             <td>{{name Filler}}</td>
                             <td>{{FilledOn}}</td>
-                            <td><a class="ui button"><i class="trash icon"></a></td>
+                            <td>{{#if user.IsAdmin}}<a class="ui button"><i class="trash icon"></a>{{/if}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
