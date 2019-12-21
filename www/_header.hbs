@@ -38,8 +38,8 @@
                 <a class="item{{#equal page "new"}} active{{/equal}}" href="/new">New Request</a>
                 <a class="item{{#equal page "users"}} active{{/equal}}" href="/leaderboard">Leaderboard</a>
                 <a class="item{{#equal page "stats"}} active{{/equal}}" href="/stats">Statistics</a>
+                <a class="item{{#equal page "a/r"}} active{{/equal}}" href="/all_requests">All Requests</a>
                 {{#if user.IsAdmin}}
                 <a class="item{{#equal page "a/u"}} active{{/equal}}" href="/admin/users"><i class="gavel icon"></i> All Users</a>
-                <a class="item{{#equal page "a/r"}} active{{/equal}}" href="/admin/requests"><i class="gavel icon"></i> All Requests</a>
                 {{/if}}
             </div>

@@ -209,8 +209,8 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/admin/requests", func(w http.ResponseWriter, r *http.Request) {
-		_, u, err := pageInit(r, w, http.MethodGet, true, true, true)
+	http.HandleFunc("/all_requests", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
 		}
