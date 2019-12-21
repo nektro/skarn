@@ -105,7 +105,7 @@ func main() {
 					return // only query once every 1 mins
 				}
 				w.Header().Add("location", "./requests")
-				w.WriteHeader(http.StatusMovedPermanently)
+				w.WriteHeader(http.StatusFound)
 				return
 			}
 		}
@@ -143,7 +143,7 @@ func main() {
 		s.Save(r, w)
 
 		w.Header().Add("location", "./requests")
-		w.WriteHeader(http.StatusMovedPermanently)
+		w.WriteHeader(http.StatusFound)
 	})
 
 	http.HandleFunc("/requests", func(w http.ResponseWriter, r *http.Request) {
