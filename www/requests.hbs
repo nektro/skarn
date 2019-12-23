@@ -27,8 +27,8 @@
                             <td class="b"><details><summary>{{Title}}</summary><div>{{Description}}</div><hr><div>{{Response}}</div></details></td>
                             <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
                             <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                            <td>{{name Owner}}</td>
-                            <td>{{name Filler}}</td>
+                            <td><a href="./requests?owner={{Owner}}">{{name Owner}}</a></td>
+                            <td><a href="./requests?filler={{Filler}}">{{name Filler}}</a></td>
                             <td>{{AddedOn}}</td>
                             <td>{{FilledOn}}</td>
                             <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>

@@ -263,12 +263,9 @@ func makeAnnouncement(message string) {
 		return
 	}
 
-	parameters := map[string]string{}
-	parameters["content"] = message
-	contentB, _ := json.Marshal(parameters)
-	contentS := string(contentB)
-
-	req, _ := http.NewRequest("POST", urlO.String(), strings.NewReader(contentS))
+	parameters := map[string]string{"message": message}
+	content, _ := json.Marshal(parameters)
+	req, _ := http.NewRequest("POST", config.Announce, strings.NewReader(string(content)))
 	req.Header.Set("User-Agent", "nektro/skarn")
 	req.Header.Set("Content-Type", "application/json")
 	http.DefaultClient.Do(req)
