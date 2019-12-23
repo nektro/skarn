@@ -152,7 +152,6 @@ func main() {
 			return
 		}
 		writePage(r, w, u, "/requests.hbs", "open", "Open Requests", map[string]interface{}{
-			"tagline":  "All of the requests that are currently unfilled can be found from here.",
 			"requests": scanRowsRequests(QueryDoSelect("requests", "filler", "-1")),
 		})
 	})
