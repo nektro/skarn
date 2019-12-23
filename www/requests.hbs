@@ -23,7 +23,7 @@
                         {{#each data.requests}}
                         <tr data-id="{{ID}}">
                             <td data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
-                            <td class="b"><div>{{Title}}</div><div>{{Description}}</div></td>
+                            <td class="b"><details><summary>{{Title}}</summary><div>{{Description}}</div><hr><div>{{Response}}</div></details></td>
                             <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
                             <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
                             <td class="f">{{name Owner}}</td>
@@ -48,7 +48,7 @@
         </style>
         <script>
             // @see https://ctrlq.org/code/20294-regex-extract-links-javascript
-            function createTextLinks_(text) {
+            function createTextLinks(text) {
                 return (text || "").replace(/([^\S]|^)(((https?\:\/\/)|(www\.))(\S+))/gi, (match, space, url) => {
                     let hyperlink = url;
                     if (!hyperlink.match("^https?:\/\/")) {
@@ -139,9 +139,9 @@
                         .then(x => location.reload())
                         .catch(x => {});
                     });
-                    $("tr.fill-desc").each((i,e) => {
-                        const el = e.children[1]
-                        el.innerHTML = createTextLinks_(e.children[1].textContent);
+                    $("tr td.b details").each((i,e) => {
+                        const el = e.children[3]
+                        el.innerHTML = createTextLinks(e.children[3].textContent);
                     });
                 });
             })();
