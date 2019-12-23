@@ -4,6 +4,7 @@
                 <table class="ui celled single line table">
                     <thead>
                         <tr>
+                            <th data-sort-method="number">ID</th>
                             <th data-sort-method="none"></th>
                             <th>Name</th>
                             <th data-sort-method="number" data-sort-default="">Fills</th>
@@ -13,6 +14,7 @@
                     <tbody>
                         {{#each data.users}}
                         <tr class="user">
+                            <td class="collapsing">{{U.ID}}</td>
                             <td class="collapsing"><img class="logo" src="https://cdn.discordapp.com/avatars/{{U.Snowflake}}/{{U.Avatar}}.jpg"></td>
                             <td>{{U.RealName}}</td>
                             <td>{{Fills}}</td>
@@ -24,8 +26,8 @@
             </div>
         </div>
         <style>
-            table.table tbody tr td:nth-child(1) { padding: 0; }
-            table.table tbody tr td:nth-child(1) img { display: block; max-height: 42px; margin: auto; }
+            table.table tbody tr td:nth-child(2) { padding: 0; }
+            table.table tbody tr td:nth-child(2) img { display: block; max-height: 42px; margin: auto; }
         </style>
         <script>
             (function() {
