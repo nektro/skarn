@@ -151,8 +151,34 @@ func main() {
 		if err != nil {
 			return
 		}
-		writePage(r, w, u, "/requests.hbs", "open", "Open Requests", map[string]interface{}{
-			"requests": scanRowsRequests(QueryDoSelect("requests", "filler", "-1")),
+		q := etc.Database.Build().Se("*").Fr("requests")
+		//
+		switch r.URL.Query().Get("status") {
+		case "open":
+			q.Wh("filler", "-1")
+		case "closed":
+			q.Wr("filler", ">", "0")
+		}
+		//
+		own := r.URL.Query().Get("owner")
+		if own != "" {
+			_, err := strconv.Atoi(own)
+			if err == nil {
+				q.Wh("owner", own)
+			}
+		}
+		//
+		fill := r.URL.Query().Get("filler")
+		if fill != "" {
+			_, err := strconv.Atoi(fill)
+			if err == nil {
+				q.Wh("filler", fill)
+			}
+		}
+		//
+		s := q.Exe()
+		writePage(r, w, u, "/requests.hbs", "reqs", "Requests", map[string]interface{}{
+			"requests": scanRowsRequests(s),
 		})
 	})
 
