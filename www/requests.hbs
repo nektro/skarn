@@ -1,4 +1,10 @@
             <div class="ui segment">
+                <a class="ui button" href="./requests">All Requests</a>
+                <a class="ui button" href="./requests?status=open">All (Open)</a>
+                <a class="ui button" href="./requests?status=closed">All (Filled)</a>
+                <a class="ui button" href="./requests?owner={{user.ID}}&amp;status=open">Mine (Open)</a>
+                <a class="ui button" href="./requests?owner={{user.ID}}&amp;status=closed">Mine (Filled)</a>
+                <a class="ui button" href="./requests?filler={{user.ID}}">Filled by Me</a>
                 <h2 class="ui header">{{title}}</h2>
                 <table class="ui celled single line compact table">
                     <thead>
