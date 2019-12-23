@@ -1,7 +1,6 @@
             <div class="ui segment">
                 <h2 class="ui header">{{title}}</h2>
                 <p>{{data.tagline}}</p>
-                {{#equal page "open"}}
                 <table class="ui celled single line compact table">
                     <thead>
                         <th data-sort-method="number" data-sort-default=""></th>
@@ -26,79 +25,6 @@
                         {{/each}}
                     </tbody>
                 </table>
-                {{/equal}}
-                {{#equal page "mine"}}
-                <div class="ui top attached tabular menu">
-                    <div class="active item" data-tab="open">Open</div>
-                    <div class="item"data-tab="filled">Filled</div>
-                </div>
-                <div class="ui bottom attached active tab segment" data-tab="open">
-                    <table class="ui celled single line compact table">
-                        <thead>
-                            <th data-sort-method="number" data-sort-default=""></th>
-                            <th data-sort-method="none">Title</th>
-                            <th data-sort-method="none">Quality</th>
-                            <th data-sort-method="none">Reference</th>
-                            <th data-sort-method="number">Points</th>
-                            <th data-sort-method="none">Requester</th>
-                            <th data-sort-method="none">Fill</th>
-                            <th data-sort-method="none">Delete</th>
-                        </thead>
-                        <tbody>
-                            {{#each data.requests}}
-                            {{#unless Filled}}
-                            <tr data-id="{{ID}}">
-                                <td data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
-                                <td class="b"><div>{{Title}}</div><div>{{Description}}</div></td>
-                                <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
-                                <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                                <td class="e">{{#if user.IsAdmin}}<div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div>{{else}}<span>{{Points}}</span>{{/if}}</td>
-                                <td class="f"><i class="user icon"></i> {{name Owner}}</td>
-                                <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
-                                <td class="i">{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
-                            </tr>
-                            {{/unless}}
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-                <div class="ui bottom attached tab segment" data-tab="filled">
-                    <table class="ui celled single line compact table">
-                        <thead>
-                            <th data-sort-method="number" data-sort-default=""></th>
-                            <th data-sort-method="none">Title</th>
-                            <th data-sort-method="none">Quality</th>
-                            <th data-sort-method="none">Reference</th>
-                            <th data-sort-method="number">Points</th>
-                            <th data-sort-method="none">Requester</th>
-                            <th data-sort-method="none">Unfill</th>
-                            <th data-sort-method="none">Delete</th>
-                        </thead>
-                        <tbody>
-                            {{#each data.requests}}
-                            {{#if Filled}}
-                            <tr data-id="{{ID}}">
-                                <td data-sort="{{ID}}.2" class="a {{#if Filled}}positive{{else}}negative{{/if}} center aligned collapsing"><i class="icon {{icon Category}}"></i></td>
-                                <td class="b"><div>{{Title}}</div><div>{{Description}}</div></td>
-                                <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
-                                <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                                <td class="e">{{#if user.IsAdmin}}<div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div>{{else}}<span>{{Points}}</span>{{/if}}</td>
-                                <td class="f"><i class="user icon"></i> {{name Owner}}</td>
-                                <td class="h">{{#equal Owner user.ID}}{{#if Filled}}<a class="ui button"><i class="undo icon"></i></a>{{/if}}{{/equal}}</td>
-                                <td class="i">{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
-                            </tr>
-                            <tr class="fill-desc">
-                                <td data-sort="{{ID}}.1"><i class="angle double right icon"></i></td>
-                                <td colspan="3">{{Response}}</td>
-                                <td></td>
-                                <td colspan="4">Filled by <i class="user icon"></i> {{name Filler}}</td>
-                            </tr>
-                            {{/if}}
-                            {{/each}}
-                        </tbody>
-                    </table>
-                </div>
-                {{/equal}}
             </div>
         </div>
         <style>
