@@ -17,8 +17,8 @@
                             <td class="collapsing">{{U.ID}}</td>
                             <td class="collapsing"><img class="logo" src="https://cdn.discordapp.com/avatars/{{U.Snowflake}}/{{U.Avatar}}.jpg"></td>
                             <td>{{U.RealName}}</td>
-                            <td>{{Fills}}</td>
-                            <td>{{Requests}}</td>
+                            <td><a href="./requests?filler={{U.ID}}">{{Fills}} <i class="ui external link icon"></i></a></td>
+                            <td><a href="./requests?owner={{U.ID}}">{{Requests}} <i class="ui external link icon"></i></a></td>
                         </tr>
                         {{/each}}
                     </tbody>
