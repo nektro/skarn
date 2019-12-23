@@ -18,7 +18,6 @@
                             <td class="b"><div>{{Title}}</div><div>{{Description}}</div></td>
                             <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
                             <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
-                            <td class="e">{{#if user.IsAdmin}}<div class="ui label"><i class="arrows alternate vertical icon"></i><span>{{Points}}</span></div>{{else}}<span>{{Points}}</span>{{/if}}</td>
                             <td class="f"><i class="user icon"></i> {{name Owner}}</td>
                             <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
                         </tr>
