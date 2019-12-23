@@ -192,18 +192,6 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/mine", func(w http.ResponseWriter, r *http.Request) {
-		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
-		if err != nil {
-			return
-		}
-		id := strconv.FormatInt(int64(u.ID), 10)
-		writePage(r, w, u, "/requests.hbs", "mine", "My Requests", map[string]interface{}{
-			"tagline":  "All requests filed by you are here.",
-			"requests": scanRowsRequests(QueryDoSelect("requests", "owner", id)),
-		})
-	})
-
 	http.HandleFunc("/leaderboard", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
@@ -231,16 +219,6 @@ func main() {
 		}
 		writePage(r, w, u, "/all_users.hbs", "a/u", "All Users", map[string]interface{}{
 			"users": scanRowsUsers(QueryDoSelectAll("users")),
-		})
-	})
-
-	http.HandleFunc("/all_requests", func(w http.ResponseWriter, r *http.Request) {
-		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
-		if err != nil {
-			return
-		}
-		writePage(r, w, u, "/all_requests.hbs", "a/r", "All Requests", map[string]interface{}{
-			"requests": scanRowsRequests(QueryDoSelectAll("requests")),
 		})
 	})
 

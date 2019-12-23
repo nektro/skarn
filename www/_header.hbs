@@ -33,12 +33,10 @@
         <div class="ui container">
             <h1 class="ui header"><i class="folder open icon"></i> Media Requests</h1>
             <div class="ui secondary pointing menu">
-                <a class="item{{#equal page "open"}} active{{/equal}}" href="/requests">Open Requests</a>
-                <a class="item{{#equal page "mine"}} active{{/equal}}" href="/mine">My Requests</a>
+                <a class="item{{#equal page "reqs"}} active{{/equal}}" href="/requests">Requests</a>
                 <a class="item{{#equal page "new"}} active{{/equal}}" href="/new">New Request</a>
                 <a class="item{{#equal page "users"}} active{{/equal}}" href="/leaderboard">Leaderboard</a>
                 <a class="item{{#equal page "stats"}} active{{/equal}}" href="/stats">Statistics</a>
-                <a class="item{{#equal page "a/r"}} active{{/equal}}" href="/all_requests">All Requests</a>
                 {{#if user.IsAdmin}}
                 <a class="item{{#equal page "a/u"}} active{{/equal}}" href="/admin/users"><i class="gavel icon"></i> All Users</a>
                 {{/if}}
