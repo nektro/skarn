@@ -366,6 +366,14 @@ func main() {
 
 	//
 
+	if !util.IsPortAvailable(config.Port) {
+		util.DieOnError(
+			E(F("Binding to port %d failed.", config.Port)),
+			"It may be taken or you may not have permission to. Aborting!",
+		)
+		return
+	}
+
 	p := strconv.Itoa(config.Port)
 	util.Log("Initialization complete. Starting server on port " + p)
 	http.ListenAndServe(":"+p, nil)
