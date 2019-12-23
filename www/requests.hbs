@@ -7,9 +7,12 @@
                         <th>Title</th>
                         <th data-sort-method="none">Quality</th>
                         <th data-sort-method="none">Reference</th>
-                        <th data-sort-method="number">Points</th>
-                        <th data-sort-method="none">Requester</th>
+                        <th>Requester</th>
+                        <th>Filler</th>
+                        <th>Filled On</th>
                         <th data-sort-method="none">Fill</th>
+                        <th data-sort-method="none">Unfill</th>
+                        <th data-sort-method="none">Delete</th>
                     </thead>
                     <tbody>
                         {{#each data.requests}}
@@ -19,7 +22,11 @@
                             <td class="c">{{#each Quality}}<div class="ui label">{{quality Category this}}</div>{{/each}}</td>
                             <td class="d"><a target="_blank" href="{{Link}}">{{domain Link}}</a> <i class="external alternate icon"></i></td>
                             <td class="f">{{name Owner}}</td>
+                            <td class="j">{{name Filler}}</td>
+                            <td class="k">{{FilledOn}}</td> 
                             <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
+                            <td class="h">{{#equal Owner user.ID}}{{#if Filled}}<a class="ui button"><i class="undo icon"></i></a>{{/if}}{{/equal}}</td>
+                            <td class="i">{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
                         </tr>
                         {{/each}}
                     </tbody>
