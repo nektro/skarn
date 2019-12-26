@@ -263,7 +263,7 @@ func makeAnnouncement(message string) {
 		return
 	}
 
-	parameters := map[string]string{"message": message}
+	parameters := map[string]string{"content": message}
 	content, _ := json.Marshal(parameters)
 	req, _ := http.NewRequest(http.MethodPost, config.Announce, strings.NewReader(string(content)))
 	req.Header.Set("User-Agent", "nektro/skarn")
