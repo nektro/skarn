@@ -104,7 +104,7 @@ func main() {
 					writeResponse(r, w, "Access Denied", "Must be a member. Please try again later.", "", "")
 					return // only query once every 1 mins
 				}
-				w.Header().Add("location", "./requests")
+				w.Header().Add("location", "./requests?status=open")
 				w.WriteHeader(http.StatusFound)
 				return
 			}
@@ -142,7 +142,7 @@ func main() {
 		s.Values["verify_time"] = time.Now().Unix()
 		s.Save(r, w)
 
-		w.Header().Add("location", "./requests")
+		w.Header().Add("location", "./requests?status=open")
 		w.WriteHeader(http.StatusFound)
 	})
 
