@@ -1,5 +1,5 @@
 # Skarn
-![loc](https://tokei.rs/b1/github/nektro/skarn)
+![loc](https://sloc.xyz/github/nektro/skarn)
 [![license](https://img.shields.io/github/license/nektro/skarn.svg)](https://github.com/nektro/skarn/blob/master/LICENSE)
 [![discord](https://img.shields.io/discord/551971034593755159.svg)](https://discord.gg/P6Y4zQC)
 [![paypal](https://img.shields.io/badge/donate-paypal-009cdf)](https://paypal.me/nektro)
