@@ -5,6 +5,7 @@
 [![paypal](https://img.shields.io/badge/donate-paypal-009cdf)](https://paypal.me/nektro)
 [![circleci](https://circleci.com/gh/nektro/skarn.svg?style=svg)](https://circleci.com/gh/nektro/skarn)
 [![goreportcard](https://goreportcard.com/badge/github.com/nektro/skarn)](https://goreportcard.com/report/github.com/nektro/skarn)
+[![codefactor](https://www.codefactor.io/repository/github/nektro/skarn/badge)](https://www.codefactor.io/repository/github/nektro/skarn)
 
 Media Request & Inventory Management System
 
