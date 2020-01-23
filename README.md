@@ -8,8 +8,6 @@
 
 Media Request & Inventory Management System
 
-[![buymeacoffee](https://www.buymeacoffee.com/assets/img/custom_images/orange_img.png)](https://www.buymeacoffee.com/nektro)
-
 ## Getting Started
 These instructions will get you a copy of the project up and running on your machine.
 
