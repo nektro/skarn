@@ -51,12 +51,19 @@ func main() {
 
 	etc.Init("skarn", &config, "./verify", saveOAuth2Info)
 
-	catf, _ := etc.MFS.Open("/categories.json")
+	//
+
+	catf, err := etc.MFS.Open("/categories.json")
+	util.DieOnError(err, "Unable to read from static resources!")
 	catb, _ := ioutil.ReadAll(catf)
 	json.Unmarshal(catb, &categoryValues)
 
+	//
+
 	etc.Database.CreateTableStruct("users", User{})
 	etc.Database.CreateTableStruct("requests", Request{})
+
+	//
 
 	util.RunOnClose(func() {
 		util.Log("Gracefully shutting down...")
