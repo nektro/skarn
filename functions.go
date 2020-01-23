@@ -121,7 +121,7 @@ func doDiscordAPIRequest(endpoint string) ([]byte, int) {
 	par := url.Values{}
 	req, _ := http.NewRequest(http.MethodGet, "https://discordapp.com/api/v6"+endpoint, strings.NewReader(par.Encode()))
 	req.Header.Set("User-Agent", "nektro/skarn")
-	req.Header.Set("Authorization", "Bot "+config.BotToken)
+	req.Header.Set("Authorization", "Bot "+*flagBT)
 	return doHttpRequest(req)
 }
 
@@ -252,10 +252,10 @@ func queryRequestById(id string) (*Request, *User, error) {
 }
 
 func makeAnnouncement(message string) {
-	if len(config.Announce) == 0 {
+	if len(*flagAW) == 0 {
 		return
 	}
-	urlO, _ := url.Parse(config.Announce)
+	urlO, _ := url.Parse(*flagAW)
 	if urlO.Host != "discordapp.com" {
 		return
 	}
@@ -265,7 +265,7 @@ func makeAnnouncement(message string) {
 
 	parameters := map[string]string{"content": message}
 	content, _ := json.Marshal(parameters)
-	req, _ := http.NewRequest(http.MethodPost, config.Announce, strings.NewReader(string(content)))
+	req, _ := http.NewRequest(http.MethodPost, *flagAW, strings.NewReader(string(content)))
 	req.Header.Set("User-Agent", "nektro/skarn")
 	req.Header.Set("Content-Type", "application/json")
 	http.DefaultClient.Do(req)

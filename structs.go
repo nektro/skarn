@@ -1,15 +1,7 @@
 package main
 
 type Config struct {
-	Port     int      `json:"port"`
-	ID       string   `json:"id"`
-	Secret   string   `json:"secret"`
-	BotToken string   `json:"bot_token"`
-	Server   string   `json:"server"`
-	Members  []string `json:"members"`
-	Admins   []string `json:"admins"`
-	Themes   []string `json:"themes"`
-	Announce string   `json:"announce_webhook_url"`
+	Themes []string `json:"themes"`
 }
 
 type User struct {

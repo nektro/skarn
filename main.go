@@ -16,6 +16,7 @@ import (
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
 	oauth2 "github.com/nektro/go.oauth2"
+	"github.com/spf13/pflag"
 	"github.com/valyala/fastjson"
 
 	. "github.com/nektro/go-util/alias"
@@ -24,18 +25,31 @@ import (
 )
 
 var (
-	config         *Config
+	config         = new(Config)
 	categoryNames  = []string{"lit", "mov", "mus", "exe", "xxx", "etc"}
 	categoryValues map[string]CategoryMapValue
+)
+
+// file:///home/meghan/.config/skarn/config.json
+
+var (
+	flagSP = pflag.Int("port", 8001, "")
+	flagCI = pflag.String("client-id", "", "")
+	flagCS = pflag.String("client-secret", "", "")
+	flagBT = pflag.String("bot-token", "", "")
+	flagGS = pflag.String("guild-id", "", "")
+	flagAM = pflag.StringArray("members", []string{}, "")
+	flagAA = pflag.StringArray("admins", []string{}, "")
+	flagAW = pflag.String("announce-webhook-url", "", "")
 )
 
 func main() {
 	util.Log("Initializing Skarn Request System...")
 
-	//
+	etc.PreInitThemes()
+	pflag.Parse()
 
 	etc.Init("skarn", &config, "./verify", saveOAuth2Info)
-	etc.ConfigAssertKeysNonEmpty(&config, "ID", "Secret", "BotToken", "Server")
 
 	catf, _ := etc.MFS.Open("/categories.json")
 	catb, _ := ioutil.ReadAll(catf)
@@ -86,8 +100,8 @@ func main() {
 
 	//
 
-	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], config.ID))
-	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], config.ID, config.Secret, saveOAuth2Info, "./verify"))
+	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], *flagCI))
+	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], *flagCI, *flagCS, saveOAuth2Info, "./verify"))
 
 	http.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
@@ -111,7 +125,7 @@ func main() {
 		}
 
 		snowflake := s.Values["user"].(string)
-		res, rcd := doDiscordAPIRequest(F("/guilds/%s/members/%s", config.Server, snowflake))
+		res, rcd := doDiscordAPIRequest(F("/guilds/%s/members/%s", *flagGS, snowflake))
 		if rcd >= 400 {
 			writeResponse(r, w, "Discord Error", fastjson.GetString(res, "message"), "", "")
 			return // discord error
@@ -124,11 +138,11 @@ func main() {
 		QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
 
 		allowed := false
-		if containsAny(dat.Roles, config.Members) {
+		if containsAny(dat.Roles, *flagAM) {
 			QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
 			allowed = true
 		}
-		if containsAny(dat.Roles, config.Admins) {
+		if containsAny(dat.Roles, *flagAA) {
 			QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
 			allowed = true
 		}
