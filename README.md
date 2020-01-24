@@ -4,6 +4,7 @@
 [![discord](https://img.shields.io/discord/551971034593755159.svg)](https://discord.gg/P6Y4zQC)
 [![paypal](https://img.shields.io/badge/donate-paypal-009cdf)](https://paypal.me/nektro)
 [![circleci](https://circleci.com/gh/nektro/skarn.svg?style=svg)](https://circleci.com/gh/nektro/skarn)
+[![release](https://img.shields.io/github/v/release/nektro/skarn)](https://github.com/nektro/skarn/releases/latest)
 [![goreportcard](https://goreportcard.com/badge/github.com/nektro/skarn)](https://goreportcard.com/report/github.com/nektro/skarn)
 [![codefactor](https://www.codefactor.io/repository/github/nektro/skarn/badge)](https://www.codefactor.io/repository/github/nektro/skarn)
 
