@@ -283,27 +283,6 @@ func main() {
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})
 
-	http.HandleFunc("/api/request/update_score", func(w http.ResponseWriter, r *http.Request) {
-		_, _, err := pageInit(r, w, http.MethodPost, true, true, true)
-		if err != nil {
-			return
-		}
-		if assertPostFormValuesExist(r, "id", "score") != nil {
-			fmt.Fprintln(w, "missing post value")
-			return
-		}
-		rid := r.PostForm["id"][0]
-		scr := r.PostForm["score"][0]
-		//
-		if !isInt(rid) || !isInt(scr) {
-			fmt.Fprintln(w, "invalid value")
-			return
-		}
-		//
-		QueryDoUpdate("requests", "points", scr, "id", rid)
-		fmt.Fprintln(w, "good")
-	})
-
 	http.HandleFunc("/api/request/fill", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
