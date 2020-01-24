@@ -1,24 +1,35 @@
             <div class="ui segment">
+                {{#equal page "new"}}
                 <h2 class="ui header">New Request</h2>
                 <p>Here you can create a new request.</p>
                 <form class="ui form" method="POST" action="./api/request/create">
+                {{/equal}}
+                {{#equal page "edit"}}
+                <h2 class="ui header">Edit Request</h2>
+                <p>Here you can update an existing request.</p>
+                <form class="ui form" method="POST" action="./api/request/update">
+                {{/equal}}
                     <div class="field">
                         <label>Category</label>
                         <select class="ui fluid dropdown" name="category" required>
                             {{#each data.categories}}
-                            <option value="{{@key}}">{{this.name}}</option>
+                            <option value="{{@key}}"{{#equal @key data.req.category}} selected{{/equal}}>{{this.name}}</option>
                             {{/each}}
                         </select>
                     </div>
                     <div class="field">
                         <label>Request Title</label>
-                        <input type="text" name="title" required placeholder="Insert title...">
+                        <input type="text" name="title" required placeholder="Insert title..." value="{{data.req.title}}">
+                    </div>
+                    <div class="field">
+                        <label>Reference Link</label>
+                        <input type="url" name="link" required placeholder="amazon.com, themoviedb.org, discogs.com, predb.me, etc" value="{{data.req.link}}">
                     </div>
                     {{#each data.categories}}
                     <div class="field" data-cat-qual="{{@key}}" hidden>
                         <label>Quality</label>
                         <div class="ui fluid multiple search selection dropdown">
-                            <input type="hidden" name="quality_{{@key}}">
+                            <input type="hidden" name="quality_{{@key}}" value="{{#equal @key data.req.category}}{{data.req.quality}}{{/equal}}">
                             <i class="dropdown icon"></i>
                             <div class="default text">Select Quality</div>
                             <div class="menu">
@@ -30,13 +41,10 @@
                     </div>
                     {{/each}}
                     <div class="field">
-                        <label>Reference Link</label>
-                        <input type="url" name="link" required placeholder="amazon.com, themoviedb.org, discogs.com, predb.me, etc">
-                    </div>
-                    <div class="field">
                         <label>Description</label>
-                        <textarea name="description" placeholder="Any extra details..."></textarea>
+                        <textarea name="description" placeholder="Any extra details...">{{data.req.description}}</textarea>
                     </div>
+                    <input type="text" name="id" value="{{data.req.id}}" hidden required readonly>
                     <button class="ui button" type="submit">Submit Request</button>
                 </form>
             </div>

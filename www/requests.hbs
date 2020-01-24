@@ -17,6 +17,7 @@
                         <th>Added On</th>
                         <th>Filled On</th>
                         <th data-sort-method="none">Fill</th>
+                        <th data-sort-method="none">Edit</th>
                         <th data-sort-method="none">Unfill</th>
                         <th data-sort-method="none">Delete</th>
                     </thead>
@@ -32,6 +33,7 @@
                             <td>{{AddedOn}}</td>
                             <td>{{FilledOn}}</td>
                             <td class="g">{{#unless Filled}}<button class="ui button">Fill</button>{{/unless}}</td>
+                            <td class="j">{{#equal Owner user.ID}}<a class="ui button" href="./edit?id={{ID}}"><i class="pencil icon"></a>{{/equal}}</td>
                             <td class="h">{{#equal Owner user.ID}}{{#if Filled}}<a class="ui button"><i class="undo icon"></i></a>{{/if}}{{/equal}}</td>
                             <td class="i">{{#equal Owner user.ID}}<a class="ui button"><i class="trash icon"></a>{{/equal}}</td>
                         </tr>

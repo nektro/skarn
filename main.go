@@ -213,6 +213,34 @@ func main() {
 		})
 	})
 
+	http.HandleFunc("/edit", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
+		if err != nil {
+			return
+		}
+		id := r.URL.Query().Get("id")
+		req, _, err := queryRequestById(id)
+		if err != nil {
+			writeResponse(r, w, "Unable to find request", "", "./../../requests?status=open", "Go back to /requests")
+			return
+		}
+		if req.Owner != u.ID {
+			writeResponse(r, w, "Must own request to edit", "", "./../../requests?status=open", "Go back to /requests")
+			return
+		}
+		writePage(r, w, u, "/new.hbs", "edit", "Edit Request", map[string]interface{}{
+			"categories": categoryValues,
+			"req": map[string]string{
+				"id":          id,
+				"category":    req.Category,
+				"title":       req.Title,
+				"quality":     strings.Join(req.Quality, ","),
+				"link":        req.Link,
+				"description": req.Description,
+			},
+		})
+	})
+
 	http.HandleFunc("/leaderboard", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
@@ -281,6 +309,54 @@ func main() {
 		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
 		makeAnnouncement(F("**[NEW]** <@%s> created a request for **%s**.", u.Snowflake, t))
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
+	})
+
+	http.HandleFunc("/api/request/update", func(w http.ResponseWriter, r *http.Request) {
+		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
+		if err != nil {
+			return
+		}
+		if assertPostFormValuesExist(r, "id", "category") != nil {
+			writeResponse(r, w, "Missing POST values", "", "./../../new", "Go back to /new")
+			return
+		}
+		id := r.PostForm.Get("id")
+		req, _, err := queryRequestById(id)
+		if err != nil {
+			writeResponse(r, w, "Request not found", "", "./../../new", "Go back to /new")
+			return
+		}
+		if req.Owner != u.ID {
+			writeResponse(r, w, "Must own request to edit", "", "./../../edit?id="+id, "Go back to /edit")
+			return
+		}
+		cat := r.PostForm.Get("category")
+		if !util.Contains(categoryNames, cat) {
+			writeResponse(r, w, "Invalid Category", "", "./../../edit?id="+id, "Go back to /edit")
+			return
+		}
+		if assertPostFormValuesExist(r, "quality_"+cat, "title", "link", "description") != nil {
+			writeResponse(r, w, "Missing POST Values", "", "./../../edit?id="+id, "Go back to /edit")
+			return
+		}
+		q := r.PostForm.Get("quality_" + cat)
+		t := r.PostForm.Get("title")
+		l := r.PostForm.Get("link")
+		d := r.PostForm.Get("description")
+		//
+		t = strings.ReplaceAll(t, "@", "@\u200D")
+		t = strings.ReplaceAll(t, ":", ":\u200D")
+		if assertURLValidity(l) != nil {
+			writeResponse(r, w, "Link is not a valid URL", "", "./../../edit?id="+id, "Go back to /edit")
+			return
+		}
+		// success
+		etc.Database.Build().Up("requests", "title", t).Wh("id", id).Exe()
+		etc.Database.Build().Up("requests", "link", l).Wh("id", id).Exe()
+		etc.Database.Build().Up("requests", "quality", q).Wh("id", id).Exe()
+		etc.Database.Build().Up("requests", "description", d).Wh("id", id).Exe()
+		makeAnnouncement(F("**[UPDATE]** <@%s> updated their request for **%s**.", u.Snowflake, t))
+		writeResponse(r, w, "Success!", F("Updated your request for %s", t), "./../../requests?status=open", "Back to home")
 	})
 
 	http.HandleFunc("/api/request/fill", func(w http.ResponseWriter, r *http.Request) {
