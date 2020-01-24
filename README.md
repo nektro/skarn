@@ -20,35 +20,25 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 - Create an application and save down the Client ID and Client Secret.
 - Add a bot to the application and save down the Bot Token.
 - Add the bot to the server you wish to auth this instance throuh.
-- Create a `~/.config/skarn/config.json`.
+- Below are the command line flags you may use to configure your Skarn instance.
 
-```json
-{
-	"port": 8000,
-	"id": "{CLIENT_ID}",
-	"secret": "{CLIENT_SECRET}",
-	"bot_token": "{BOT_TOKEN}",
-	"server": "{SERVER_ID}",
-	"members": ["{ROLE_SNOWFLAKE"],
-	"admins": ["{ROLE_SNOWFLAKE"],
-	"themes": ["{THEME_ID}"],
-	"announce_webhook_url": "{}"
-}
-```
-- It should be in the above format.
-    - `"members"` is an array of role snowflakes that will be added as a member. Member can create and fill requests.
-    - `"admins"` is an array of role snowflakes that will be added as an admin. Admins can adjust the amount of points each request is worth.
-- Lastly run the binary as follows obtained from either the *Deployment* or *Development* sections.
-
-```bash
-$ ./skarn
-```
+| Name | Type | Default | Description |
+|------|------|---------|-------------|
+| `--port` | `int` | `8001` | Port for web server to bind to. |
+| `--client-id` | `string` | none. | Client ID |
+| `--client-secret` | `string` | none. | Client Secret |
+| `--bot-token` | `string` | none. | Bot Token |
+| `--guild-id` | `string` | none. | Guild Snowflake |
+| `--members` | `[]string` | none. | List of role snowflakes that may view this instance |
+| `--admins` | `[]string` | none. | List of role snowflakes that may manage this instance |
+| `--theme` | `[]string` | none. | List of theme IDs |
+| `--announce-webhook-url` | `string` | none. | Discord webhook URL for announcements |
 
 ### Themes
-Skarn supports custom themes through use of the `"themes"` property in your `config.json` to identify a folder or list of folders to overwrite any of the handlebars template files. The location to place themes is at `~/.config/skarn/themes/{THEME_ID}/`
+Skarn supports custom themes through use of the `--theme` flag to identify a folder or list of folders to overwrite any of the handlebars template files. The location to place themes is at `~/.config/skarn/themes/{THEME_ID}/`
 
 ### Announcements
-Using the `"announce_webhook_url"` property you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
+Using the `--announce_webhook_url` flag you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
 
 ### Deployment
 Pre-compiled binaries can be obtained from https://github.com/nektro/skarn/releases/latest.
