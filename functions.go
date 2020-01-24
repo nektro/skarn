@@ -153,10 +153,7 @@ func writeResponse(r *http.Request, w http.ResponseWriter, title string, message
 
 func assertPostFormValuesExist(r *http.Request, args ...string) error {
 	for _, item := range args {
-		v, o := r.PostForm[item]
-		if !o {
-			return E(F("form[%s] not sent", item))
-		}
+		v := r.PostForm.Get(item)
 		if len(v) == 0 {
 			return E(F("form[%s] empty", item))
 		}
