@@ -54,7 +54,7 @@ Using the `"announce_webhook_url"` property you can create an announcements chan
 By signing in with GitHub, you can download pre-built binaries from the *Artifacts* tab of https://circleci.com/gh/nektro/skarn.
 
 ### Development
-- The Go Language 1.7+ (https://golang.org/dl/)
+- The Go Language 1.12+ (https://golang.org/dl/)
 - GCC on your PATH (for the https://github.com/mattn/go-sqlite3 installation)
 
 ```bash
@@ -70,7 +70,6 @@ $ ./scripts/build/all.sh
 We take issues all the time right here on GitHub. We use labels extensively to show the progress through the fixing process. Question issues are okay but make sure to close the issue when it's been answered!
 
 When making a pull request, please have it be associated with an issue and make a comment on the issue saying that you're working on it so everyone else knows what's going on :D
-
 
 ## Contact
 - hello@nektro.net
