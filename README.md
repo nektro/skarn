@@ -51,7 +51,7 @@ Skarn supports custom themes through use of the `"themes"` property in your `con
 Using the `"announce_webhook_url"` property you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
 
 ### Deployment
-By signing in with GitHub, you can download pre-built binaries from the *Artifacts* tab of https://circleci.com/gh/nektro/skarn.
+Pre-compiled binaries can be obtained from https://github.com/nektro/skarn/releases/latest.
 
 ### Development
 - The Go Language 1.12+ (https://golang.org/dl/)
