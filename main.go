@@ -251,7 +251,7 @@ func main() {
 			return
 		}
 		if assertPostFormValuesExist(r, "category") != nil {
-			writeResponse(r, w, "Missing POST Value", "", "./../../new", "Go back to /new")
+			writeResponse(r, w, "Missing POST values", "", "./../../new", "Go back to /new")
 			return
 		}
 		cat := r.PostForm["category"][0]
@@ -260,8 +260,8 @@ func main() {
 			return
 		}
 		if assertPostFormValuesExist(r, "quality_"+cat, "title", "link", "description") != nil {
-			writeResponse(r, w, "Missing POST Values", "Request description items are required.", "./../../new", "Go back to /new")
-			return // post value not found
+			writeResponse(r, w, "Missing POST values", "", "./../../new", "Go back to /new")
+			return
 		}
 		q := r.PostForm["quality_"+cat][0]
 		t := r.PostForm["title"][0]
@@ -269,8 +269,8 @@ func main() {
 		d := r.PostForm["description"][0]
 		lerr := assertURLValidity(l)
 		if lerr != nil {
-			fmt.Fprintln(w, "E", "link", lerr.Error())
-			return // link is not a url
+			writeResponse(r, w, "Link is not a valid URL", "", "./../../new", "Go back to /new")
+			return
 		}
 		i := etc.Database.QueryNextID("requests")
 		o := u.ID
@@ -310,6 +310,7 @@ func main() {
 			return
 		}
 		if assertPostFormValuesExist(r, "id", "message") != nil {
+			writeResponse(r, w, "Missing POST values", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		rid := r.PostForm["id"][0]
@@ -317,9 +318,11 @@ func main() {
 		//
 		req, own, err := queryRequestById(rid)
 		if err != nil {
+			writeResponse(r, w, "Unable to find request", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		if req.Filled {
+			writeResponse(r, w, "Cannot fill already filled request", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		//
@@ -336,14 +339,17 @@ func main() {
 			return
 		}
 		if assertPostFormValuesExist(r, "id") != nil {
+			writeResponse(r, w, "Missing POST values", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		rid := r.PostForm["id"][0]
 		req, own, err := queryRequestById(rid)
 		if err != nil {
+			writeResponse(r, w, "Unable to find request", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		if u.ID != own.ID && !u.IsAdmin {
+			writeResponse(r, w, "Must own request to unfill", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		//
@@ -360,15 +366,17 @@ func main() {
 			return
 		}
 		if assertPostFormValuesExist(r, "id") != nil {
-			fmt.Fprintln(w, "missing post value")
+			writeResponse(r, w, "Missing POST values", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		rid := r.PostForm["id"][0]
 		req, own, err := queryRequestById(rid)
 		if err != nil {
+			writeResponse(r, w, "Unable to find request", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		if u.ID != own.ID && !u.IsAdmin {
+			writeResponse(r, w, "Must own request to delete", "", "./../../requests", "Go back to /requests")
 			return
 		}
 		//
