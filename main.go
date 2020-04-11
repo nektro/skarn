@@ -104,7 +104,7 @@ func main() {
 	etc.Router.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], config.Clients[0].ID))
 	etc.Router.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], config.Clients[0].ID, config.Clients[0].Secret, saveOAuth2Info, "./verify"))
 
-	http.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
 		if err != nil {
 			return
@@ -161,7 +161,7 @@ func main() {
 		w.WriteHeader(http.StatusFound)
 	})
 
-	http.HandleFunc("/requests", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/requests", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -197,7 +197,7 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/new", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/new", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -207,7 +207,7 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/edit", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/edit", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -235,7 +235,7 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/leaderboard", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/leaderboard", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -245,7 +245,7 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -255,7 +255,7 @@ func main() {
 		})
 	})
 
-	http.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, true)
 		if err != nil {
 			return
@@ -267,7 +267,7 @@ func main() {
 
 	//
 
-	http.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -305,7 +305,7 @@ func main() {
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})
 
-	http.HandleFunc("/api/request/update", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/api/request/update", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -353,7 +353,7 @@ func main() {
 		writeResponse(r, w, "Success!", F("Updated your request for %s", t), "./../../requests?status=open", "Back to home")
 	})
 
-	http.HandleFunc("/api/request/fill", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/api/request/fill", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -382,7 +382,7 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
-	http.HandleFunc("/api/request/unfill", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/api/request/unfill", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -409,7 +409,7 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
-	http.HandleFunc("/api/request/delete", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/api/request/delete", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -434,7 +434,7 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
-	http.HandleFunc("/api/stats", func(w http.ResponseWriter, r *http.Request) {
+	etc.Router.HandleFunc("/api/stats", func(w http.ResponseWriter, r *http.Request) {
 		_, _, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
