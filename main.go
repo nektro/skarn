@@ -12,6 +12,7 @@ import (
 	"time"
 
 	"github.com/aymerick/raymond"
+	"github.com/nektro/go-util/arrays/stringsu"
 	"github.com/nektro/go-util/util"
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
@@ -285,7 +286,7 @@ func main() {
 			return
 		}
 		cat := r.PostForm["category"][0]
-		if !util.Contains(categoryNames, cat) {
+		if !stringsu.Contains(categoryNames, cat) {
 			writeResponse(r, w, "Invalid Category", "", "./../../new", "Go back to /new")
 			return
 		}
@@ -333,7 +334,7 @@ func main() {
 			return
 		}
 		cat := r.PostForm.Get("category")
-		if !util.Contains(categoryNames, cat) {
+		if !stringsu.Contains(categoryNames, cat) {
 			writeResponse(r, w, "Invalid Category", "", "./../../edit?id="+id, "Go back to /edit")
 			return
 		}

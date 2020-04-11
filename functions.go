@@ -10,6 +10,7 @@ import (
 	"strings"
 
 	"github.com/gorilla/sessions"
+	"github.com/nektro/go-util/arrays/stringsu"
 	"github.com/nektro/go-util/util"
 	etc "github.com/nektro/go.etc"
 
@@ -134,7 +135,7 @@ func doHttpRequest(req *http.Request) ([]byte, int) {
 
 func containsAny(haystack []string, needle []string) bool {
 	for _, item := range needle {
-		if util.Contains(haystack, item) {
+		if stringsu.Contains(haystack, item) {
 			return true
 		}
 	}
