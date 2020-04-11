@@ -66,10 +66,7 @@ func queryUserBySnowflake(snowflake string) *User {
 	}
 	// else
 	id := etc.Database.QueryNextID("users")
-	etc.Database.Build().Ins("users", id, snowflake, T(), 0, 0, "", "", "").Exe()
-	if id == 1 {
-		QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
-	}
+	etc.Database.Build().Ins("users", id, snowflake, T(), 0, util.Btoi(id == 1), "", "", "").Exe()
 	return queryUserBySnowflake(snowflake)
 }
 
