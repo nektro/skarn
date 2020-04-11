@@ -57,7 +57,7 @@ func main() {
 	//
 
 	catf, err := etc.MFS.Open("/categories.json")
-	util.DieOnError(err, "Unable to read from static resources!")
+	util.DieOnError(err, "Unable to read 'categories.json' from static resources!")
 	catb, _ := ioutil.ReadAll(catf)
 	json.Unmarshal(catb, &categoryValues)
 
