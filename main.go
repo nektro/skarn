@@ -17,7 +17,6 @@ import (
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
 	oauth2 "github.com/nektro/go.oauth2"
-	"github.com/spf13/pflag"
 	"github.com/valyala/fastjson"
 
 	. "github.com/nektro/go-util/alias"
@@ -33,17 +32,6 @@ var (
 )
 
 // file:///home/meghan/.config/skarn/config.json
-
-var (
-	flagSP = pflag.Int("port", 8001, "")
-	flagCI = pflag.String("client-id", "", "")
-	flagCS = pflag.String("client-secret", "", "")
-	flagBT = pflag.String("bot-token", "", "")
-	flagGS = pflag.String("guild-id", "", "")
-	flagAM = pflag.StringArray("members", []string{}, "")
-	flagAA = pflag.StringArray("admins", []string{}, "")
-	flagAW = pflag.String("announce-webhook-url", "", "")
-)
 
 func main() {
 	etc.AppID = "skarn"
@@ -110,8 +98,11 @@ func main() {
 
 	//
 
-	http.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], *flagCI))
-	http.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], *flagCI, *flagCS, saveOAuth2Info, "./verify"))
+	util.DieOnError(util.Assert(len(config.Clients) == 1, "'config.json' must only have 1 client"))
+	util.DieOnError(util.Assert(config.Clients[0].For == "discord", "client in 'config.json' must be for discord"))
+
+	etc.Router.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], config.Clients[0].ID))
+	etc.Router.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], config.Clients[0].ID, config.Clients[0].Secret, saveOAuth2Info, "./verify"))
 
 	http.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
@@ -135,7 +126,7 @@ func main() {
 		}
 
 		snowflake := s.Values["user"].(string)
-		res, rcd := doDiscordAPIRequest(F("/guilds/%s/members/%s", *flagGS, snowflake))
+		res, rcd := doDiscordAPIRequest(F("/guilds/%s/members/%s", config.Clients[0].Extra2, snowflake))
 		if rcd >= 400 {
 			writeResponse(r, w, "Discord Error", fastjson.GetString(res, "message"), "", "")
 			return // discord error
@@ -148,11 +139,11 @@ func main() {
 		QueryDoUpdate("users", "avatar", dat.User.Avatar, "snowflake", snowflake)
 
 		allowed := false
-		if containsAny(dat.Roles, *flagAM) {
+		if containsAny(dat.Roles, config.Members) {
 			QueryDoUpdate("users", "is_member", "1", "snowflake", snowflake)
 			allowed = true
 		}
-		if containsAny(dat.Roles, *flagAA) {
+		if containsAny(dat.Roles, config.Admins) {
 			QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
 			allowed = true
 		}
@@ -457,5 +448,5 @@ func main() {
 
 	//
 
-	etc.StartServer(*flagSP)
+	etc.StartServer(config.Port)
 }

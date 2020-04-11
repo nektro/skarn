@@ -1,7 +1,16 @@
 package main
 
+import (
+	oauth2 "github.com/nektro/go.oauth2"
+)
+
 type Config struct {
-	Themes []string `json:"themes"`
+	Port        int              `json:"port"`
+	Clients     []oauth2.AppConf `json:"clients"`
+	Themes      []string         `json:"themes"`
+	Members     []string         `json:"members"`
+	Admins      []string         `json:"admins"`
+	AnnounceURL string           `json:"announce_webhook_url"`
 }
 
 type User struct {
