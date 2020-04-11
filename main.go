@@ -306,7 +306,7 @@ func main() {
 		t = strings.ReplaceAll(t, ":", ":\u200D")
 
 		// success
-		etc.Database.QueryPrepared(true, F("insert into requests values (%d, %d, ?, '%s', ?, ?, ?, ?, 1, -1, '', '')", i, o, T()), cat, t, q, l, d)
+		etc.Database.Build().Ins("requests", i, o, cat, T(), t, q, l, d, 1, -1, "", "").Exe()
 		makeAnnouncement(F("**[NEW]** <@%s> created a request for **%s**.", u.Snowflake, t))
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})

@@ -32,7 +32,7 @@ func QueryDoSelectAll(table string) *sql.Rows {
 	return etc.Database.Build().Se("*").Fr(table).Exe()
 }
 func QueryDelete(table, col, val string) *sql.Rows {
-	return etc.Database.QueryPrepared(true, F("delete from %s where %s = ?", table, col), val)
+	return etc.Database.Build().Del("table").Wh(col, val).Exe()
 }
 
 //
@@ -65,7 +65,7 @@ func queryUserBySnowflake(snowflake string) *User {
 	}
 	// else
 	id := etc.Database.QueryNextID("users")
-	etc.Database.QueryPrepared(true, F("insert into users values ('%d', '%s', '%s', 0, 0, '', '', '')", id, snowflake, T()))
+	etc.Database.Build().Ins("users", id, snowflake, T(), 0, 0, "", "", "").Exe()
 	if id == 1 {
 		QueryDoUpdate("users", "is_admin", "1", "snowflake", snowflake)
 	}
