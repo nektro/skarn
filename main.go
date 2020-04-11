@@ -71,8 +71,8 @@ func main() {
 	util.RunOnClose(func() {
 		util.Log("Gracefully shutting down...")
 
+		util.Log("Saving database to disk")
 		etc.Database.Close()
-		util.Log("Saved database to disk")
 
 		os.Exit(0)
 	})
