@@ -28,6 +28,7 @@ var (
 	config         = new(Config)
 	categoryNames  = []string{"lit", "mov", "mus", "exe", "xxx", "etc"}
 	categoryValues map[string]CategoryMapValue
+	Version        = "vMASTER"
 )
 
 // file:///home/meghan/.config/skarn/config.json
@@ -44,6 +45,7 @@ var (
 )
 
 func main() {
+	Version = etc.FixBareVersion(Version)
 	util.Log("Initializing Skarn Request System...")
 
 	etc.PreInitThemes()

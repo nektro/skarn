@@ -216,17 +216,19 @@ func scanRowsUsersComplete(rows *sql.Rows) []UserComplete {
 
 func writePage(r *http.Request, w http.ResponseWriter, user *User, path string, page string, title string, data map[string]interface{}) {
 	etc.WriteHandlebarsFile(r, w, "/_header.hbs", map[string]interface{}{
-		"base":  "/",
-		"user":  user,
-		"page":  page,
-		"title": title,
+		"version": Version,
+		"base":    "/",
+		"user":    user,
+		"page":    page,
+		"title":   title,
 	})
 	etc.WriteHandlebarsFile(r, w, path, map[string]interface{}{
-		"base":  "/",
-		"user":  user,
-		"page":  page,
-		"title": title,
-		"data":  data,
+		"version": Version,
+		"base":    "/",
+		"user":    user,
+		"page":    page,
+		"title":   title,
+		"data":    data,
 	})
 }
 
