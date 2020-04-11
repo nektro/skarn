@@ -45,11 +45,11 @@ var (
 )
 
 func main() {
+	etc.AppID = "skarn"
 	Version = etc.FixBareVersion(Version)
 	util.Log("Initializing Skarn Request System...")
 
-	etc.PreInitThemes()
-	pflag.Parse()
+	etc.PreInit()
 
 	etc.Init("skarn", &config, "./verify", saveOAuth2Info)
 
