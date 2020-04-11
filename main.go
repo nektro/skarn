@@ -290,14 +290,14 @@ func main() {
 			writeResponse(r, w, "Invalid Category", "", "./../../new", "Go back to /new")
 			return
 		}
-		if assertPostFormValuesExist(r, "quality_"+cat, "title", "link", "description") != nil {
+		if assertPostFormValuesExist(r, "quality_"+cat, "title", "link") != nil {
 			writeResponse(r, w, "Missing POST values", "", "./../../new", "Go back to /new")
 			return
 		}
-		q := r.PostForm["quality_"+cat][0]
-		t := r.PostForm["title"][0]
-		l := r.PostForm["link"][0]
-		d := r.PostForm["description"][0]
+		q := r.PostForm.Get("quality_" + cat)
+		t := r.PostForm.Get("title")
+		l := r.PostForm.Get("link")
+		d := r.PostForm.Get("description")
 		lerr := assertURLValidity(l)
 		if lerr != nil {
 			writeResponse(r, w, "Link is not a valid URL", "", "./../../new", "Go back to /new")
