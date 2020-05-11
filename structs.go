@@ -5,12 +5,13 @@ import (
 )
 
 type Config struct {
-	Port        int              `json:"port"`
-	Clients     []oauth2.AppConf `json:"clients"`
-	Themes      []string         `json:"themes"`
-	Members     []string         `json:"members"`
-	Admins      []string         `json:"admins"`
-	AnnounceURL string           `json:"announce_webhook_url"`
+	Port        int               `json:"port"`
+	Clients     []oauth2.AppConf  `json:"clients"`
+	Providers   []oauth2.Provider `json:"providers"`
+	Themes      []string          `json:"themes"`
+	Members     []string          `json:"members"`
+	Admins      []string          `json:"admins"`
+	AnnounceURL string            `json:"announce_webhook_url"`
 }
 
 type User struct {
