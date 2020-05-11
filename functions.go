@@ -20,18 +20,27 @@ import (
 //
 //
 
+// QueryDoSelect simplifies commonly built sql statements
 func QueryDoSelect(table, col, val string) *sql.Rows {
 	return etc.Database.Build().Se("*").Fr(table).Wh(col, val).Exe()
 }
+
+// QuerySelectFunc simplifies commonly built sql statements
 func QuerySelectFunc(table, f, fcol, col, val string) *sql.Rows {
 	return etc.Database.Build().Se(F("%s(%s)", f, fcol)).Fr(table).Wh(col, val).Exe()
 }
+
+// QueryDoUpdate simplifies commonly built sql statements
 func QueryDoUpdate(table, ucol, uval, col, val string) *sql.Rows {
 	return etc.Database.Build().Up(table, ucol, uval).Wh(col, val).Exe()
 }
+
+// QueryDoSelectAll simplifies commonly built sql statements
 func QueryDoSelectAll(table string) *sql.Rows {
 	return etc.Database.Build().Se("*").Fr(table).Exe()
 }
+
+// QueryDelete simplifies commonly built sql statements
 func QueryDelete(table, col, val string) *sql.Rows {
 	return etc.Database.Build().Del(table).Wh(col, val).Exe()
 }
