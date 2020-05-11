@@ -33,7 +33,7 @@ func QueryDoSelectAll(table string) *sql.Rows {
 	return etc.Database.Build().Se("*").Fr(table).Exe()
 }
 func QueryDelete(table, col, val string) *sql.Rows {
-	return etc.Database.Build().Del("table").Wh(col, val).Exe()
+	return etc.Database.Build().Del(table).Wh(col, val).Exe()
 }
 
 //
