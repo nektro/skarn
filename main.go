@@ -17,6 +17,7 @@ import (
 	"github.com/nektro/go-util/vflag"
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
+	"github.com/nektro/go.etc/htp"
 	"github.com/valyala/fastjson"
 
 	. "github.com/nektro/go-util/alias"
@@ -105,7 +106,7 @@ func main() {
 	util.DieOnError(util.Assert(len(config.Clients) == 1, "'config.json' must only have 1 client"))
 	util.DieOnError(util.Assert(config.Clients[0].For == "discord", "client in 'config.json' must be for discord"))
 
-	etc.Router.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/verify", "GET", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
 		if err != nil {
 			return
@@ -162,7 +163,7 @@ func main() {
 		w.WriteHeader(http.StatusFound)
 	})
 
-	etc.Router.HandleFunc("/requests", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/requests", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -198,7 +199,7 @@ func main() {
 		})
 	})
 
-	etc.Router.HandleFunc("/new", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/new", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -208,7 +209,7 @@ func main() {
 		})
 	})
 
-	etc.Router.HandleFunc("/edit", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/edit", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -236,7 +237,7 @@ func main() {
 		})
 	})
 
-	etc.Router.HandleFunc("/leaderboard", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/leaderboard", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -246,7 +247,7 @@ func main() {
 		})
 	})
 
-	etc.Router.HandleFunc("/stats", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/stats", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
@@ -256,7 +257,7 @@ func main() {
 		})
 	})
 
-	etc.Router.HandleFunc("/admin/users", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/admin/users", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodGet, true, true, true)
 		if err != nil {
 			return
@@ -268,7 +269,7 @@ func main() {
 
 	//
 
-	etc.Router.HandleFunc("/api/request/create", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/api/request/create", "POST", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -306,7 +307,7 @@ func main() {
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})
 
-	etc.Router.HandleFunc("/api/request/update", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/api/request/update", "POST", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -354,7 +355,7 @@ func main() {
 		writeResponse(r, w, "Success!", F("Updated your request for %s", t), "./../../requests?status=open", "Back to home")
 	})
 
-	etc.Router.HandleFunc("/api/request/fill", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/api/request/fill", "POST", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -383,7 +384,7 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
-	etc.Router.HandleFunc("/api/request/unfill", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/api/request/unfill", "POST", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -410,7 +411,7 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
-	etc.Router.HandleFunc("/api/request/delete", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/api/request/delete", "POST", func(w http.ResponseWriter, r *http.Request) {
 		_, u, err := pageInit(r, w, http.MethodPost, true, true, false)
 		if err != nil {
 			return
@@ -435,7 +436,7 @@ func main() {
 		fmt.Fprintln(w, "good")
 	})
 
-	etc.Router.HandleFunc("/api/stats", func(w http.ResponseWriter, r *http.Request) {
+	htp.Register("/api/stats", "GET", func(w http.ResponseWriter, r *http.Request) {
 		_, _, err := pageInit(r, w, http.MethodGet, true, true, false)
 		if err != nil {
 			return
