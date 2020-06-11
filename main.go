@@ -16,7 +16,6 @@ import (
 	"github.com/nektro/go-util/util"
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
-	oauth2 "github.com/nektro/go.oauth2"
 	"github.com/valyala/fastjson"
 
 	. "github.com/nektro/go-util/alias"
@@ -100,9 +99,6 @@ func main() {
 
 	util.DieOnError(util.Assert(len(config.Clients) == 1, "'config.json' must only have 1 client"))
 	util.DieOnError(util.Assert(config.Clients[0].For == "discord", "client in 'config.json' must be for discord"))
-
-	etc.Router.HandleFunc("/login", oauth2.HandleOAuthLogin(isLoggedIn, "./verify", oauth2.ProviderIDMap["discord"], config.Clients[0].ID))
-	etc.Router.HandleFunc("/callback", oauth2.HandleOAuthCallback(oauth2.ProviderIDMap["discord"], config.Clients[0].ID, config.Clients[0].Secret, saveOAuth2Info, "./verify"))
 
 	etc.Router.HandleFunc("/verify", func(w http.ResponseWriter, r *http.Request) {
 		s, u, err := pageInit(r, w, http.MethodGet, true, false, false)
