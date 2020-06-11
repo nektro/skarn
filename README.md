@@ -25,10 +25,6 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 | Name | Type | Default | Description |
 |------|------|---------|-------------|
 | `--port` | `int` | `8001` | Port for web server to bind to. |
-| `--client-id` | `string` | none. | Client ID |
-| `--client-secret` | `string` | none. | Client Secret |
-| `--bot-token` | `string` | none. | Bot Token |
-| `--guild-id` | `string` | none. | Guild Snowflake |
 | `--members` | `[]string` | none. | List of role snowflakes that may view this instance |
 | `--admins` | `[]string` | none. | List of role snowflakes that may manage this instance |
 | `--theme` | `[]string` | none. | List of theme IDs |
