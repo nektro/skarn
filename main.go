@@ -14,6 +14,7 @@ import (
 	"github.com/aymerick/raymond"
 	"github.com/nektro/go-util/arrays/stringsu"
 	"github.com/nektro/go-util/util"
+	"github.com/nektro/go-util/vflag"
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
 	"github.com/valyala/fastjson"
@@ -37,6 +38,10 @@ func main() {
 	Version = etc.FixBareVersion(Version)
 	util.Log("Initializing Skarn Request System...")
 
+	vflag.IntVar(&config.Port, "port", 8000, "")
+	vflag.StringArrayVar(&config.Members, "members", []string{}, "")
+	vflag.StringArrayVar(&config.Members, "admins", []string{}, "")
+	vflag.StringVar(&config.AnnounceURL, "announce-webhook-url", "", "")
 	etc.PreInit()
 
 	etc.Init("skarn", &config, "./verify", saveOAuth2Info)
