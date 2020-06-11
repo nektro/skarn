@@ -34,7 +34,7 @@ This guide assumes you want to configure Skarn to a Discord server and auto-add 
 Skarn supports custom themes through use of the `--theme` flag to identify a folder or list of folders to overwrite any of the handlebars template files. The location to place themes is at `~/.config/skarn/themes/{THEME_ID}/`
 
 ### Announcements
-Using the `--announce_webhook_url` flag you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
+Using the `--announce-webhook-url` flag you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
 
 ### Deployment
 Pre-compiled binaries can be obtained from https://github.com/nektro/skarn/releases/latest.
