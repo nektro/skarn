@@ -15,6 +15,7 @@ import (
 	"github.com/nektro/go-util/arrays/stringsu"
 	"github.com/nektro/go-util/util"
 	"github.com/nektro/go-util/vflag"
+	dbstorage "github.com/nektro/go.dbstorage"
 	discord "github.com/nektro/go.discord"
 	etc "github.com/nektro/go.etc"
 	"github.com/nektro/go.etc/htp"
@@ -30,6 +31,7 @@ var (
 	categoryNames  = []string{"lit", "mov", "mus", "exe", "xxx", "etc"}
 	categoryValues map[string]CategoryMapValue
 	Version        = "vMASTER"
+	db             dbstorage.Database
 )
 
 // file:///home/meghan/.config/skarn/config.json
@@ -56,8 +58,9 @@ func main() {
 
 	//
 
-	etc.Database.CreateTableStruct("users", User{})
-	etc.Database.CreateTableStruct("requests", Request{})
+	db = etc.Database
+	db.CreateTableStruct("users", User{})
+	db.CreateTableStruct("requests", Request{})
 
 	//
 
@@ -65,7 +68,7 @@ func main() {
 		util.Log("Gracefully shutting down...")
 
 		util.Log("Saving database to disk")
-		etc.Database.Close()
+		db.Close()
 
 		os.Exit(0)
 	})
@@ -168,7 +171,7 @@ func main() {
 		if err != nil {
 			return
 		}
-		q := etc.Database.Build().Se("*").Fr("requests")
+		q := db.Build().Se("*").Fr("requests")
 		//
 		switch r.URL.Query().Get("status") {
 		case "open":
@@ -296,13 +299,13 @@ func main() {
 			writeResponse(r, w, "Link is not a valid URL", "", "./../../new", "Go back to /new")
 			return
 		}
-		i := etc.Database.QueryNextID("requests")
+		i := db.QueryNextID("requests")
 		o := u.ID
 		t = strings.ReplaceAll(t, "@", "@\u200D")
 		t = strings.ReplaceAll(t, ":", ":\u200D")
 
 		// success
-		etc.Database.Build().Ins("requests", i, o, cat, T(), t, q, l, d, 1, -1, "", "").Exe()
+		db.Build().Ins("requests", i, o, cat, T(), t, q, l, d, 1, -1, "", "").Exe()
 		makeAnnouncement(F("**[NEW]** <@%s> created a request for **%s**.", u.Snowflake, t))
 		writeResponse(r, w, "Success!", F("Added your request for %s", t), "./../../requests", "Back to home")
 	})
@@ -347,10 +350,10 @@ func main() {
 			return
 		}
 		// success
-		etc.Database.Build().Up("requests", "title", t).Wh("id", id).Exe()
-		etc.Database.Build().Up("requests", "link", l).Wh("id", id).Exe()
-		etc.Database.Build().Up("requests", "quality", q).Wh("id", id).Exe()
-		etc.Database.Build().Up("requests", "description", d).Wh("id", id).Exe()
+		db.Build().Up("requests", "title", t).Wh("id", id).Exe()
+		db.Build().Up("requests", "link", l).Wh("id", id).Exe()
+		db.Build().Up("requests", "quality", q).Wh("id", id).Exe()
+		db.Build().Up("requests", "description", d).Wh("id", id).Exe()
 		makeAnnouncement(F("**[UPDATE]** <@%s> updated their request for **%s**.", u.Snowflake, t))
 		writeResponse(r, w, "Success!", F("Updated your request for %s", t), "./../../requests?status=open", "Back to home")
 	})
