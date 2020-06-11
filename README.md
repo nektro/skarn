@@ -36,16 +36,27 @@ Skarn supports custom themes through use of the `--theme` flag to identify a fol
 ### Announcements
 Using the `--announce-webhook-url` flag you can create an announcements channel that will display status updates to requests. See https://support.discordapp.com/hc/en-us/articles/228383668-Intro-to-Webhooks for more info on how to setup Discord Webhooks and get the URL.
 
-### Deployment
+## Development
+
+### Prerequisites
+- The Go Language 1.12+ (https://golang.org/dl/)
+- Docker (https://www.docker.com/products/docker-desktop)
+- Docker Compose (https://docs.docker.com/compose/install/)
+
+### Installing
+Run
+```
+$ git clone https://github.com/nektro/skarn
+$ cd ./skarn/
+$ go get -v .
+$ docker-compose up
+```
+
+## Deployment
 Pre-compiled binaries can be obtained from https://github.com/nektro/skarn/releases/latest.
 
-### Development
-- The Go Language 1.12+ (https://golang.org/dl/)
-- GCC on your PATH (for the https://github.com/mattn/go-sqlite3 installation)
-
-```bash
-$ go get -u -v github.com/nektro/skarn
-$ cd $GOPATH/src/github.com/nektro/skarn/
+Or you can build from source:
+```
 $ ./scripts/build/all.sh
 ```
 
